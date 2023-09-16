@@ -1,0 +1,73 @@
+pre{margin-bottom:20px}
+.btnbox-center{float:right;position:relative;text-align:left}
+.btn-center{position:relative;left:50%}
+input.ng-invalid{border:1px solid red}
+input.ng-valid{border:1px solid green}
+.error{color:red}
+.btn-left{float:left}
+.btn-right{float:right!important}
+#form-container{background:#fff;margin-bottom:20px;border-radius:5px}
+#form-container .page-header{background:#fff;margin:0;padding:30px;border-top-left-radius:5px;border-top-right-radius:5px}
+#status-buttons a{color:#88c;display:inline-block;font-size:12px;margin-right:10px;text-align:center;text-transform:uppercase}
+#status-buttons a:hover{text-decoration:none}
+#status-buttons span{background:#404040;display:block;height:30px;margin:0 auto 10px;padding-top:5px;width:30px;border-radius:50%}
+#status-buttons a.active span{background:#00bc8c;border-radius:50%}
+#signup-form{position:relative;min-height:300px;overflow:hidden;padding:30px}
+#form-views.ng-enter,#form-views.ng-leave{position:absolute;left:30px;right:30px;transition:.5s;-moz-transition:.5s;-webkit-transition:.5s}
+#form-views.ng-enter{-webkit-animation:0.5s both slideInRight;-moz-animation:0.5s both slideInRight;animation:0.5s both slideInRight}
+#form-views.ng-leave{-webkit-animation:0.5s both slideOutLeft;-moz-animation:0.5s both slideOutLeft;animation:0.5s both slideOutLeft}
+@keyframes slideOutLeft{
+to{transform:translateX(-200%)}
+}
+@-moz-keyframes slideOutLeft{
+to{-moz-transform:translateX(-200%)}
+}
+@-webkit-keyframes slideOutLeft{
+to{-webkit-transform:translateX(-200%)}
+}
+@keyframes slideInRight{
+from{transform:translateX(200%)}
+to{transform:translateX(0)}
+}
+@-moz-keyframes slideInRight{
+from{-moz-transform:translateX(200%)}
+to{-moz-transform:translateX(0)}
+}
+@-webkit-keyframes slideInRight{
+from{-webkit-transform:translateX(200%)}
+to{-webkit-transform:translateX(0)}
+}
+/* .btn-group:hover>.dropdown-menu{display:block}
+.btn-group>.dropdown-toggle:active{pointer-events:none} */
+
+.stickywrap {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    float: none;
+    overflow: hidden;
+    display: scroll;
+    position: fixed;
+    bottom: 0;
+    z-index: 9999
+}
+
+.stickyzone {
+    text-align: center;
+    display: block;
+    max-width: 970px;
+    height: auto;
+    overflow: hidden;
+    margin: auto
+}
+
+.stickyzone img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle
+}
+
+.stickyclose {
+    cursor: pointer;
+    text-align: center
+}
