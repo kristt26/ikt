@@ -38,7 +38,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#administrasi-jemaat" aria-expanded="false" aria-controls="administrasi-jemaat">
-                    <span class="menu-title">Administrasi Jemaat</span>
+                    <span class="menu-title">Administrasi</span>
                     <i class="menu-arrow"></i>
                     <i class="mdi mdi-view-list menu-icon"></i>
                 </a>
@@ -46,12 +46,12 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="<?= base_url('keluarga') ?>">Keluarga</a>
                         </li>
-                        <li class="nav-item"> <a class="nav-link" href="<?= base_url('anggota') ?>">Anggota Jemaat</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="<?= base_url('mutasi') ?>">Mutasi Jemaat</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="<?= base_url('anggota') ?>">Anggota IKT</a></li>
+                        <!-- <li class="nav-item"> <a class="nav-link" href="<?= base_url('mutasi') ?>">Mutasi Jemaat</a></li> -->
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#pelayanan" aria-expanded="false" aria-controls="pelayanan">
                     <span class="menu-title">Pelayanan<sup ng-if="menuLayanan > 0"><span class="badge bg-danger" style="border-radius: 1.125rem; padding: 0.3rem !important;">{{menuLayanan}}</span></sup></span>
                     <i class="menu-arrow"></i>
@@ -80,7 +80,7 @@
                     <span class="menu-title">Laporan</span>
                     <i class="mdi mdi-file-chart menu-icon"></i>
                 </a>
-            </li>
+            </li> -->
 
             <!-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#cetak" aria-expanded="false" aria-controls="cetak">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pendataan Jemaat</title>
+    <title>Pendataan IKT</title>
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/css/style.css">
@@ -29,7 +29,8 @@
         <!-- <div class="row p-0 m-0" id="proBanner" style="margin-bottom: 200px;"></div> -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="<?= base_url() ?>"><img src="<?= base_url('temp') ?>/assets/images/logo-spenja.png" alt="logo" /></a>
+                <!-- <a class="navbar-brand brand-logo" href="<?= base_url() ?>"><img src="<?= base_url('temp') ?>/assets/images/logo-spenja.png" alt="logo" /></a> -->
+                <a class="navbar-brand brand-logo" href="<?= base_url() ?>">IKT</a>
                 <a class="navbar-brand brand-logo-mini" href="<?= base_url() ?>"><img src="<?= base_url('temp') ?>/assets/images/mini-logo.png" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -88,8 +89,8 @@
                     <div class="container-fluid d-flex justify-content-between">
                         <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright ©
                             Octagon Cendrawasih Solution (OCS)</span>
-                        <span class="float-none float-sm-end mt-1 mt-sm-0 text-end">With <a href="https://stimiksepnop.ac.id/" target="_blank">STIMIK
-                                Sepuluh Nopember Jayapura</a></span>
+                        <!-- <span class="float-none float-sm-end mt-1 mt-sm-0 text-end">With <a href="https://stimiksepnop.ac.id/" target="_blank">STIMIK
+                                Sepuluh Nopember Jayapura</a></span> -->
                     </div>
                 </footer>
             </div>

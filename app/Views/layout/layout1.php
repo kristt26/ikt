@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pendataan Jemaat</title>
+    <title>Pendataan IKT</title>
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="<?= base_url('temp') ?>/assets/css/style.css">
@@ -83,8 +83,8 @@
                     <div class=" container-fluid d-flex justify-content-between">
                         <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright ©
                             Octagon Cendrawasih Solution (OCS)</span>
-                        <span class="float-none float-sm-end mt-1 mt-sm-0 text-end">With <a href="https://stimiksepnop.ac.id/" target="_blank">STIMIK
-                                Sepuluh Nopember Jayapura</a></span>
+                        <!-- <span class="float-none float-sm-end mt-1 mt-sm-0 text-end">With <a href="https://stimiksepnop.ac.id/" target="_blank">STIMIK
+                                Sepuluh Nopember Jayapura</a></span> -->
                     </div>
                 </footer>
             </div>
