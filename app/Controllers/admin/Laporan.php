@@ -15,37 +15,25 @@ use PhpOffice\PhpSpreadsheet\RichText\RichText;
 class Laporan extends BaseController
 {
     use ResponseTrait;
-    protected $kk;
+    protected $keluarga;
     protected $anggota;
-    protected $ksp;
-    protected $wijk;
-    protected $baptis;
-    protected $sidi;
-    protected $nikah;
     protected $anggotaKeluarga;
-    protected $jemaatKK;
-    protected $meninggal;
-    protected $pindah;
+    protected $wilayah;
+    protected $kerukunan;
     protected $conn;
     protected $lastKK;
     protected $no;
     public function __construct()
     {
-        $this->kk = new \App\Models\KkModel();
-        $this->anggota = new \App\Models\AnggotaKKModel();
-        $this->ksp = new \App\Models\KspModel();
-        $this->wijk = new \App\Models\WijkModel();
-        $this->baptis = new \App\Models\BaptisModel();
-        $this->sidi = new \App\Models\SidiModel();
-        $this->nikah = new \App\Models\NikahModel();
+        $this->keluarga = new \App\Models\KeluargaModel();
+        $this->anggota = new \App\Models\AnggotaModel();
         $this->anggotaKeluarga = new \App\Models\AnggotaKeluargaModel();
-        $this->jemaatKK = new \App\Models\JemaatKKModel();
-        $this->meninggal = new \App\Models\MeninggalModel();
-        $this->pindah = new \App\Models\PindahModel();
+        $this->wilayah = new \App\Models\WilayahModel();
+        $this->kerukunan = new \App\Models\KerukunanModel();
         $this->conn = \Config\Database::connect();
         $this->lastKK = "";
         $this->no = 1;
-        helper("find");
+        helper('find');
     }
 
     public function index()
@@ -268,7 +256,13 @@ class Laporan extends BaseController
             $param = $this->request->getGet();
             // dd($param);
             $list['title'] = "Kepala Keluarga";
-            $data['anggota'] = $this->jemaatKK->LaporanKepalaKeluarga(session()->get('jemaat_id'), isset($param['wijk_id']) ? dekrip($param['wijk_id']) : NULL, isset($param['ksp_id']) ? dekrip($param['ksp_id']) : NULL)->getResultArray();
+            $data['anggota'] = $this->anggota
+            ->select("keluarga.*, anggota_keluarga.keluarga_id, anggota.nama, wilayah.wilayah, kerukunan.kerukunan")
+            ->join("anggota_keluarga", "anggota_keluarga.anggota_id=anggota.id", "left")
+            ->join("keluarga", "anggota_keluarga.keluarga_id=keluarga.id", "left")
+            ->join("wilayah", "wilayah.id=keluarga.wilayah_id", "left")
+            ->join("kerukunan", "kerukunan.id=keluarga.kerukunan_id", "left")
+            ->where('hubungan_keluarga', "KEPALA KELUARGA")->findAll();
             return view('admin/laporan/cetak_kepala_keluarga', $data);
         }
     }

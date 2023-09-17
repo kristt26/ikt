@@ -11,10 +11,12 @@ class Anggota extends BaseController
     use ResponseTrait;
     protected $keluarga;
     protected $anggota;
+    protected $conn;
     public function __construct()
     {
         $this->keluarga = new \App\Models\KeluargaModel();
         $this->anggota = new \App\Models\AnggotaModel();
+        $this->conn = \Config\Database::connect();
     }
 
     public function index()
@@ -94,19 +96,7 @@ class Anggota extends BaseController
         try {
             $this->conn->transBegin();
             $this->anggota->update($value->id, $value);
-            !is_null($value->baptis) && isset($value->baptis->berkas) ? $value->baptis->file = $this->decode->decodebase64($value->baptis->berkas->base64) : false;
-            !is_null($value->baptis) && isset($value->baptis->id)  ? $this->baptis->update($value->baptis->id, $value->baptis) : (!is_null($value->baptis) && !isset($value->baptis->id) ? $this->baptis->insert($value->baptis) : "");
-            !is_null($value->baptis) && !isset($value->baptis->id) ? $value->baptis->id = $this->baptis->getInsertID() : false;
-
-            !is_null($value->sidi) && isset($value->sidi->berkas) ? $value->sidi->file = $this->decode->decodebase64($value->sidi->berkas->base64) : false;
-            !is_null($value->sidi) && isset($value->sidi->id)  ? $this->sidi->update($value->sidi->id, $value->sidi) : (!is_null($value->sidi) && !isset($value->sidi->id) ? $this->sidi->insert($value->sidi) : "");
-            !is_null($value->sidi) && !isset($value->sidi->id) ? $value->sidi->id = $this->sidi->getInsertID() : false;
-
-            !is_null($value->nikah) && isset($value->nikah->berkas) ? $value->nikah->file = $this->decode->decodebase64($value->nikah->berkas->base64) : false;
-            !is_null($value->nikah) && isset($value->nikah->id)  ? $this->nikah->update($value->nikah->id, $value->nikah) : (!is_null($value->nikah) && !isset($value->nikah->id) ? $this->nikah->insert($value->nikah) : "");
-            !is_null($value->nikah) && !isset($value->nikah->id) ? $value->nikah->id = $this->nikah->getInsertID() : false;
             $this->conn->transCommit();
-            logger('notice', $value);
             return $this->respond($value);
         } catch (\Throwable $th) {
             $this->conn->transRollback();
@@ -116,9 +106,7 @@ class Anggota extends BaseController
 
     public function delete($id)
     {
-        $data = $this->anggota->first($id);
-        if ($this->ksp->delete($id)) {
-            logger('notice', $data);
+        if ($this->anggota->delete($id)) {
             return $this->respond(true);
         } else {
             return $this->fail(false);
@@ -155,12 +143,14 @@ class Anggota extends BaseController
 
     public function getId($id = null)
     {
-        $data['anggota'] = $this->anggota->asObject()->select("anggota_jemaat.*, anggota_kk.kk_id")->join("anggota_kk", "anggota_kk.anggota_jemaat_id=anggota_jemaat.id")->where("anggota_jemaat.id='$id'")->first();
-        $data['kk'] = $this->kk->getDetail($data['anggota']->kk_id);
-        $data['baptis'] = $this->baptis->where("anggotakk_id", $data['anggota']->id)->first();
-        $data['sidi'] = $this->sidi->where("anggotakk_id", $data['anggota']->id)->first();
-        $data['nikah'] = $this->nikah->where("anggotakk_id", $data['anggota']->id)->first();
-        $data['kk']->anggota = $this->anggota->asObject()->select("anggota_jemaat.*")->join('anggota_kk', 'anggota_kk.anggota_jemaat_id=anggota_jemaat.id')->where('kk_id', $data['kk']->id)->first();
+        $data['anggota'] = $this->anggota->select("anggota.*, anggota_keluarga.keluarga_id")->join("anggota_keluarga", "anggota_keluarga.anggota_id=anggota.id", "left")->where("id", "$id")->first();
+        $data['kk'] = $this->anggota->asObject()
+            ->select("keluarga.*, anggota_keluarga.keluarga_id, anggota.nama")
+            ->join("anggota_keluarga", "anggota_keluarga.anggota_id=anggota.id", "left")
+            ->join("keluarga", "anggota_keluarga.keluarga_id=keluarga.id", "left")
+            ->where('hubungan_keluarga', "KEPALA KELUARGA")
+            ->where("keluarga.id", $data['anggota']['keluarga_id'])->first();
+        $data['kk']->anggota = $data['anggota'];
         return $this->respond($data);
     }
 

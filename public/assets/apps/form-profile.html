@@ -41,10 +41,11 @@
                     Kerukunan Dipilih.
                 </small>
             </span>
-            <select name="kerukunan" id="kerukunan" ui-select2="{ allowClear: true}"
-                class="form-control form-control-sm select2" data-placeholder="--Pilih Kerukunan--"
-                ng-options="item as item.kerukunan for item in datas.kerukunan track by item.kerukunan" ng-model="kerukunan"
-                ng-change="model.kerukunan_id=kerukunan.id; model.kerukunan=kerukunan.kerukunan" required>
+            <select name="kerukunan" id="kerukunan" ui-select2="select2Options"
+                class="form-control form-control-sm select2"
+                ng-options="item as item.kerukunan for item in datas.kerukunan track by item.kerukunan"
+                ng-model="kerukunan" ng-change="model.kerukunan_id=kerukunan.id; model.kerukunan=kerukunan.kerukunan"
+                required>
                 <option value=""></option>
             </select>
         </div>
@@ -64,10 +65,9 @@
                     Status tinggal wajib dipilih.
                 </small>
             </span>
-            <select name="status_tinggal" id="status_tinggal" ui-select2="{ allowClear: true}"
-                class="form-control form-control-sm select2" data-placeholder="--Pilih Status Tinggal--"
-                ng-model="model.status_tinggal" required>
-                <option value=""></option>
+            <select name="status_tinggal" id="status_tinggal" ui-select2 class="form-control form-control-sm select2"
+                data-placeholder="--Pilih Status Tinggal--" ng-model="model.status_tinggal" required>
+                <option ng-if="!model.id" value=""></option>
                 <option value="Hak Milik">Hak Milik</option>
                 <option value="Sewa">Sewa</option>
                 <option value="Kost">kost</option>
@@ -85,11 +85,11 @@
                     Alamat tidak boleh kosong.
                 </small>
                 <small class="" ng-show="signupform.alamat.$error.minlength">
-                    Alamat harus minimal 3 digit
+                    Alamat harus minimal 1 digit
                 </small>
             </span>
             <textarea name="alamat" id="alamat" rows="4" class="form-control form-control-sm" ng-model="model.alamat"
-                placeholder="Alamat" ng-minlength=3 required></textarea>
+                placeholder="Alamat" ng-minlength=1 required></textarea>
         </div>
     </div>
 </div>
@@ -102,4 +102,24 @@
         ng-disabled=signupform.$invalid ng-click="next()">
         Next <span class="mdi mdi-arrow-right-bold"></span>
     </a>
+</div>
+<div class="modal fade" id="addKerukunan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Kerukunan</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="kerukunan">Kerukunan</label>
+                    <input type="text" class="form-control" id="kerukunan" ng-model="dataRukun.kerukunan"
+                        placeholder="Nama Kerukunan" required capitalize>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="hideModel()">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" ng-click="saveKerukunan()">Tambah</button>
+            </div>
+        </div>
+    </div>
 </div>

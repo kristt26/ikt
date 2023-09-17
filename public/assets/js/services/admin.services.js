@@ -2,7 +2,7 @@ angular.module('admin.service', [])
     // admin
     .factory('dashboardServices', dashboardServices)
     .factory('wilayahServices', wilayahServices)
-    .factory('wijkServices', wijkServices)
+    .factory('kerukunanServices', kerukunanServices)
     .factory('kspServices', kspServices)
     .factory('keluargaServices', keluargaServices)
     .factory('anggotaServices', anggotaServices)
@@ -17,7 +17,7 @@ angular.module('admin.service', [])
     .factory('laporanAnggotaServices', laporanAnggotaServices)
     .factory('laporanServices', laporanServices)
     .factory('pindahJemaatServices', pindahJemaatServices)
-    
+
     // Anggota
     .factory('layananBaptisServices', layananBaptisServices)
     .factory('layananSidiServices', layananSidiServices)
@@ -33,7 +33,7 @@ function dashboardServices($http, $q, helperServices, AuthService) {
     service.instance = false;
     return {
         get: get,
-        getLayanan:getLayanan
+        getLayanan: getLayanan
     };
 
     function get() {
@@ -155,8 +155,8 @@ function wilayahServices($http, $q, helperServices, AuthService, pesan) {
     }
 }
 
-function wijkServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'wijk/';
+function kerukunanServices($http, $q, helperServices, AuthService, pesan) {
+    var controller = helperServices.url + 'kerukunan/';
     var service = {};
     service.data = [];
     return {
@@ -216,8 +216,7 @@ function wijkServices($http, $q, helperServices, AuthService, pesan) {
             (res) => {
                 var data = service.data.find(x => x.id == param.id);
                 if (data) {
-                    data.wijk = param.wijk;
-                    data.inisial = param.inisial;
+                    data.kerukunan = param.kerukunan;
                 }
                 def.resolve(res.data);
             },
@@ -363,6 +362,7 @@ function keluargaServices($http, $q, helperServices, AuthService, pesan) {
         get: get,
         getId: getId,
         post: post,
+        addKerukunan: addKerukunan,
         put: put,
         deleted: deleted,
         pecah: pecah
@@ -424,6 +424,25 @@ function keluargaServices($http, $q, helperServices, AuthService, pesan) {
             },
             (err) => {
                 pesan.Error(err.data.messages.error);
+                def.reject(err);
+            }
+        );
+        return def.promise;
+    }
+
+    function addKerukunan(param) {
+        var def = $q.defer();
+        $http({
+            method: 'post',
+            url: helperServices.url + 'kerukunan/' + 'post',
+            data: param,
+            headers: AuthService.getHeader()
+        }).then(
+            (res) => {
+                def.resolve(res.data);
+            },
+            (err) => {
+                message.error(err.data.messages.error);
                 def.reject(err);
             }
         );
@@ -916,7 +935,7 @@ function persyaratanServices($http, $q, helperServices, AuthService, pesan) {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'read_by_layanan?id='+id,
+            url: controller + 'read_by_layanan?id=' + id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
@@ -1084,7 +1103,7 @@ function kelengkapanServices($http, $q, helperServices, AuthService, pesan) {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'get_by_pendaftaran/'+id,
+            url: controller + 'get_by_pendaftaran/' + id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
@@ -1648,8 +1667,8 @@ function gerejaServices($http, $q, helperServices, AuthService, pesan) {
     var service = {};
     service.data = [];
     return {
-        get:get,
-        post:post
+        get: get,
+        post: post
     };
 
     function get() {
@@ -1697,8 +1716,8 @@ function pindahJemaatServices($http, $q, helperServices, AuthService, pesan) {
     return {
         getKepalaKeluarga: getKepalaKeluarga,
         cetakKepalaKeluarga: cetakKepalaKeluarga,
-        post:post,
-        pindah:pindah
+        post: post,
+        pindah: pindah
     };
 
     function post(param) {
@@ -1854,7 +1873,7 @@ function layananBaptisServices($http, $q, helperServices, AuthService, pesan) {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'edit?set='+id,
+            url: controller + 'edit?set=' + id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
@@ -2002,7 +2021,7 @@ function layananSidiServices($http, $q, helperServices, AuthService, pesan) {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'edit?set='+id,
+            url: controller + 'edit?set=' + id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
@@ -2150,7 +2169,7 @@ function layananNikahServices($http, $q, helperServices, AuthService, pesan) {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'edit?set='+id,
+            url: controller + 'edit?set=' + id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {

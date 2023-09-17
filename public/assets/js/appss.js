@@ -14,8 +14,10 @@ angular.module('appss', [
     "component"
 
 ])
+
     .controller('indexController', indexController)
     .directive('emaudio', emaudio)
+    .directive('capitalize', capitalize)
     .controller('formController', formController)
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -62,10 +64,6 @@ function indexController($scope, dashboardServices) {
     $scope.$on("send", function (evt, data) {
         $scope.warning = data;
     });
-    dashboardServices.getLayanan().then(res=>{
-        $scope.layanan = res;
-        $scope.menuLayanan = res.baptis+res.sidi+res.nikah;
-    })
 }
 
 function emaudio() {
@@ -156,6 +154,7 @@ function formController($scope, helperServices, keluargaServices, wilayahService
     $scope.formData = {};
     $scope.kel = {};
     $scope.kerukunan = {};
+    $scope.dataRukun = {};
     $scope.golonganDarah = helperServices.golonganDarah;
     $scope.agama = helperServices.agama;
     $scope.hubungan = helperServices.hubungan;
@@ -167,31 +166,43 @@ function formController($scope, helperServices, keluargaServices, wilayahService
     setTimeout(() => {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl)
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     }, 300);
     
+    $scope.select2Options = {
+        allowClear: true,
+        placeholder: "--Silahkan pilih--",
+        language: {
+            "noResults": function () {
+                setTimeout(() => {
+                    document.getElementById("add").addEventListener("click", (key)=>{
+                        $("#addKerukunan").modal('show');
+                        console.log("Test");
+                    });
+                }, 100);
+                return "<button class='btn btn-info btn-sm' id='add'>Tambah data</button>";
+            }
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    };
+
     $.LoadingOverlay("show");
     keluargaServices.get().then(res => {
         $scope.datas = res;
         var item;
         if (window.localStorage.getItem('biodata')) {
             $.LoadingOverlay("hide");
-            wilayahServices.prov().then(res => {
-                $scope.provinsi = res;
-                $scope.model = JSON.parse(window.localStorage.getItem('biodata'));
-                if($scope.model.id){
-                    $scope.prov = $scope.provinsi.find(x => x.nama == $scope.model.provinsi);
-                    $scope.getData('kab', $scope.provinsi.find(x => x.nama == $scope.model.provinsi).id);
-                    $scope.wijk = $scope.datas.wijk.find(x => x.id == $scope.model.wijk_id);
-                    $scope.ksp = $scope.wijk.ksp.find(x => x.id == $scope.model.ksp_id);
-                }else{
-                }
-                var lastPath = helperServices.lastPath;
-                if(lastPath == "data"){
-                    $state.go('add.keluarga');
-                }
-            })
+            $scope.provinsi = res;
+            $scope.model = JSON.parse(window.localStorage.getItem('biodata'));
+            $scope.kerukunan = $scope.datas.kerukunan.find(x => x.id == $scope.model.kerukunan_id);
+            $scope.kel = $scope.datas.wilayah.find(x => x.id == $scope.model.wilayah_id);
+            var lastPath = helperServices.lastPath;
+            if (lastPath == "data") {
+                $state.go('add.keluarga');
+            }
         } else {
             $.LoadingOverlay("hide");
         }
@@ -205,6 +216,21 @@ function formController($scope, helperServices, keluargaServices, wilayahService
         // } else {
         // }
     })
+
+    $scope.hideModel =()=>{
+        $("#addKerukunan").modal('hide');
+    }
+
+    $scope.saveKerukunan = ()=>{
+        $.LoadingOverlay("show");
+        keluargaServices.addKerukunan($scope.dataRukun).then(res=>{
+            pesan.Success("Proses Berhasil");
+            $scope.datas.kerukunan.push(res);
+            $scope.dataRukun = {};
+            $("#addKerukunan").modal('hide');
+            $.LoadingOverlay("hide");
+        })
+    }
 
     $scope.setTambah = (item) => {
         $scope.tambahAnggota = item;
@@ -230,15 +256,15 @@ function formController($scope, helperServices, keluargaServices, wilayahService
         $scope.itemAnggota.sidi = $scope.sidi;
         $scope.itemAnggota.nikah = $scope.nikah;
         if (!$scope.statusEdit) {
-            if(!$scope.model.anggota){
+            if (!$scope.model.anggota) {
                 $scope.model.anggota = [];
             }
             $scope.model.anggota.push(angular.copy($scope.itemAnggota));
-        }else{
+        } else {
             $scope.itemAnggota.baptis.anggotakk_id = $scope.itemAnggota.id;
             $scope.itemAnggota.sidi.anggotakk_id = $scope.itemAnggota.id;
             $scope.itemAnggota.nikah.anggotakk_id = $scope.itemAnggota.id;
-        }        
+        }
         $scope.itemAnggota = {};
         $scope.baptis = {};
         $scope.sidi = {};
@@ -257,9 +283,9 @@ function formController($scope, helperServices, keluargaServices, wilayahService
         $scope.baptis = $scope.itemAnggota.baptis
         $scope.sidi = $scope.itemAnggota.sidi
         $scope.nikah = $scope.itemAnggota.nikah
-        !$scope.baptis ? $scope.baptis={}: false;
-        !$scope.sidi ? $scope.sidi={}: false;
-        !$scope.nikah ? $scope.nikah={}: false;
+        !$scope.baptis ? $scope.baptis = {} : false;
+        !$scope.sidi ? $scope.sidi = {} : false;
+        !$scope.nikah ? $scope.nikah = {} : false;
         $scope.itemAnggota.tanggal_lahir = new Date($scope.itemAnggota.tanggal_lahir);
         $scope.baptis.tanggal_baptis ? $scope.baptis.tanggal_baptis = new Date($scope.baptis.tanggal_baptis) : undefined;
         $scope.sidi.tanggal_sidi ? $scope.sidi.tanggal_sidi = new Date($scope.sidi.tanggal_sidi) : undefined;
@@ -304,25 +330,25 @@ function formController($scope, helperServices, keluargaServices, wilayahService
     $scope.save = function () {
         pesan.dialog("Yakin ingin menlanjutkan?", "Ya", "Tidak").then(x => {
             $.LoadingOverlay("show");
-            if($scope.model.setPage=="edit"){
+            if ($scope.model.setPage == "edit") {
                 keluargaServices.put($scope.model).then(res => {
                     pesan.Success("Proses Berhasil");
                     window.localStorage.removeItem('biodata');
                     $.LoadingOverlay("hide");
-                    $state.go('data', {}, {reload: false});
+                    $state.go('data', {}, { reload: false });
                 })
-            }else if($scope.model.setPage=="add"){
+            } else if ($scope.model.setPage == "add") {
                 keluargaServices.post($scope.model).then(res => {
                     pesan.Success("Proses Berhasil");
                     window.localStorage.removeItem('biodata');
                     $.LoadingOverlay("hide");
-                    $state.go('data', {}, {reload: false});
+                    $state.go('data', {}, { reload: false });
                 })
-            }else{
-                if($scope.model.anggota.length>1){
-                    var indexKepala = $scope.model.anggota.indexOf($scope.model.anggota.find(x=x.hubungan_keluarga =="KEPALA KELUARAGA"));
-                    var indexIstri = $scope.model.anggota.indexOf($scope.model.anggota.find(x=x.hubungan_keluarga =="ISTRI"));
-                    if(indexKepala!=0){
+            } else {
+                if ($scope.model.anggota.length > 1) {
+                    var indexKepala = $scope.model.anggota.indexOf($scope.model.anggota.find(x = x.hubungan_keluarga == "KEPALA KELUARAGA"));
+                    var indexIstri = $scope.model.anggota.indexOf($scope.model.anggota.find(x = x.hubungan_keluarga == "ISTRI"));
+                    if (indexKepala != 0) {
                         var element = $scope.model.anggota[indexKepala];
                         $scope.model.anggota.splice(indexKepala, 1);
                         $scope.model.anggota.splice(indexIstri, 0, element);
@@ -332,25 +358,25 @@ function formController($scope, helperServices, keluargaServices, wilayahService
                     pesan.Success("Proses Berhasil");
                     window.localStorage.removeItem('biodata');
                     $.LoadingOverlay("hide");
-                    $state.go('data', {}, {reload: false});
+                    $state.go('data', {}, { reload: false });
                 })
             }
         })
     };
 
-    $scope.batal = ()=>{
+    $scope.batal = () => {
         window.localStorage.removeItem('biodata');
-        $state.go('data', {}, {reload: false});
+        $state.go('data', {}, { reload: false });
     }
 
-    $scope.detailData = (item)=>{
+    $scope.detailData = (item) => {
         document.location.href = helperServices.url + "keluarga/detail/" + item.id
     }
 
-    $scope.edit = (id)=>{
-        keluargaServices.getId(id).then(res=>{
+    $scope.edit = (id) => {
+        keluargaServices.getId(id).then(res => {
             res.setPage = "edit";
-            window.localStorage.setItem('biodata', JSON.stringify(res)); 
+            window.localStorage.setItem('biodata', JSON.stringify(res));
             $state.go('add.keluarga');
         })
     }
@@ -359,36 +385,36 @@ function formController($scope, helperServices, keluargaServices, wilayahService
         window.localStorage.setItem('biodata', JSON.stringify($scope.model));
     }
 
-    $scope.formTambah = (id)=>{
+    $scope.formTambah = (id) => {
         document.location.href = helperServices.url + 'anggota/add/' + id;
     }
 
     let myWin;
-    $scope.cetak = (item)=>{
-        myWin = window.open(helperServices.url+"keluarga/cetak/"+item.id, "_blank");
+    $scope.cetak = (item) => {
+        myWin = window.open(helperServices.url + "keluarga/cetak/" + item.id, "_blank");
     }
-    $scope.cetakAll = ()=>{
+    $scope.cetakAll = () => {
         // window.open(helperServices.url+"keluarga/cetakall", "_blank");
         async function myDisplay() {
-            await new Promise(resolve=> {
-                myWin = window.open(helperServices.url+"laporan/print?item="+helperServices.encript('kepalaKeluarga'), "_blank");
+            await new Promise(resolve => {
+                myWin = window.open(helperServices.url + "laporan/print?item=" + helperServices.encript('kepalaKeluarga'), "_blank");
                 resolve(myWin);
-              }, reject=>{
-                  reject;
-              });
-          }
+            }, reject => {
+                reject;
+            });
+        }
         myDisplay();
-        
+
     }
 
     var temWijk = ""
     var temKsp = ""
-    $scope.setKodeKK = (value, set)=>{
-        set=="wijk" ? temWijk = value : temKsp = value;
-        $scope.model.kode_kk = temWijk+temKsp;
+    $scope.setKodeKK = (value, set) => {
+        set == "wijk" ? temWijk = value : temKsp = value;
+        $scope.model.kode_kk = temWijk + temKsp;
     }
 
-    $scope.hapus = (param)=>{
+    $scope.hapus = (param) => {
         pesan.dialog("Yakin ingin menlanjutkan?", "Ya", "Tidak").then(x => {
             $.LoadingOverlay("show");
             keluargaServices.deleted(param).then(res => {
@@ -397,4 +423,28 @@ function formController($scope, helperServices, keluargaServices, wilayahService
             })
         })
     }
+}
+
+function capitalize() {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, modelCtrl) {
+            var capitalize = function (inputValue) {
+                if (inputValue == undefined) inputValue = '';
+                var capitalized = inputValue.toUpperCase();
+                if (capitalized !== inputValue) {
+                    // see where the cursor is before the update so that we can set it back
+                    var selection = element[0].selectionStart;
+                    modelCtrl.$setViewValue(capitalized);
+                    modelCtrl.$render();
+                    // set back the cursor after rendering
+                    element[0].selectionStart = selection;
+                    element[0].selectionEnd = selection;
+                }
+                return capitalized;
+            }
+            modelCtrl.$parsers.push(capitalize);
+            capitalize(scope[attrs.ngModel]); // capitalize initial value
+        }
+    };
 }

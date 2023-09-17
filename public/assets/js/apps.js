@@ -23,6 +23,7 @@ angular.module('apps', [
     // }])
     .controller('indexController', indexController)
     .directive('emaudio', emaudio)
+    .directive('capitalize', capitalize)
     // .directive('dynamic', ['$compile', function ($compile) {
     //     return {
     //       restrict: 'A',
@@ -35,7 +36,7 @@ angular.module('apps', [
     //       }
     //     };
     //   }])
-;
+    ;
 
 
 function indexController($scope, helperServices, dashboardServices) {
@@ -54,11 +55,7 @@ function indexController($scope, helperServices, dashboardServices) {
     $scope.$on("send", function (evt, data) {
         $scope.warning = data;
     });
-    // dashboardServices.getLayanan().then(res=>{
-    //     $scope.layanan = res;
-    //     $scope.menuLayanan = res.baptis+res.sidi+res.nikah;
-    // })
-    
+
 }
 
 function emaudio() {
@@ -132,6 +129,30 @@ function emaudio() {
                 $scope.$apply();
             };
 
+        }
+    };
+}
+
+function capitalize() {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, modelCtrl) {
+            var capitalize = function (inputValue) {
+                if (inputValue == undefined) inputValue = '';
+                var capitalized = inputValue.toUpperCase();
+                if (capitalized !== inputValue) {
+                    // see where the cursor is before the update so that we can set it back
+                    var selection = element[0].selectionStart;
+                    modelCtrl.$setViewValue(capitalized);
+                    modelCtrl.$render();
+                    // set back the cursor after rendering
+                    element[0].selectionStart = selection;
+                    element[0].selectionEnd = selection;
+                }
+                return capitalized;
+            }
+            modelCtrl.$parsers.push(capitalize);
+            capitalize(scope[attrs.ngModel]); // capitalize initial value
         }
     };
 }

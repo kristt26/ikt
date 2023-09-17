@@ -8,46 +8,40 @@ use CodeIgniter\API\ResponseTrait;
 class Kerukunan extends BaseController
 {
     use ResponseTrait;
+    protected $kerukunan;
     public function __construct()
     {
-        $this->wijk = new \App\Models\WijkModel();
-        helper("logger");
+        $this->kerukunan = new \App\Models\KerukunanModel();
     }
 
     public function index()
     {
-        return view('admin/wijk');
+        return view('admin/kerukunan');
     }
 
     public function read()
     {
-        logger('notice', '');
-        return $this->respond($this->wijk->where('wijk.jemaat_id', session()->get('jemaat_id'))->findAll());
+        return $this->respond($this->kerukunan->findAll());
     }
 
     public function post()
     {
         $data = $this->request->getJSON();
-        $data->jemaat_id = session()->get('jemaat_id');
-        $this->wijk->insert($data);
-        $data->id = $this->wijk->getInsertID();
-        logger('notice', $data);
+        $this->kerukunan->insert($data);
+        $data->id = $this->kerukunan->getInsertID();
         return $this->respond($data);
     }
 
     public function put()
     {
         $data = $this->request->getJSON();
-        $this->wijk->update($data->id, $data);
-        logger('notice', $data);
+        $this->kerukunan->update($data->id, $data);
         return $this->respond($data);
     }
 
     public function delete($id)
     {
-        $data = $this->wijk->find($id);
-        if ($this->wijk->delete($id)) {
-            logger('notice', $data);
+        if ($this->kerukunan->delete($id)) {
             return $this->respond(true);
         } else {
             return $this->fail(false);

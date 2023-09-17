@@ -51,13 +51,7 @@ $routes->group('gereja', ['filter' => 'all_auth'], function ($routes) {
  * Super Admin
  * --------------------------------------------------------------------
  */
-$routes->group('gereja', ['filter' => 'administrator_auth'], function ($routes) {
-   $routes->get('', 'administrator\Gereja::index');
-   $routes->get('read', 'administrator\Gereja::read');
-   $routes->post('post', 'administrator\Gereja::post');
-   $routes->put('put', 'administrator\Gereja::put');
-   $routes->delete('delete/(:any)', 'administrator\Gereja::delete/$1');
-});
+
 /*
  * --------------------------------------------------------------------
  * End Super Admin
@@ -78,13 +72,6 @@ $routes->group('home', ['filter' => 'all_auth'], function ($routes) {
 });
 
 
-$routes->group('ksp', ['filter' => 'auth'], function ($routes) {
-   $routes->get('', 'Admin\Ksp::index');
-   $routes->get('read', 'Admin\Ksp::read');
-   $routes->post('post', 'Admin\Ksp::post');
-   $routes->put('put', 'Admin\Ksp::put');
-   $routes->delete('delete/(:any)', 'Admin\Ksp::delete/$1');
-});
 
 $routes->group('anggota', ['filter' => 'auth'], function ($routes) {
    $routes->get('', 'Admin\Anggota::index');
@@ -117,18 +104,6 @@ $routes->group('keluarga', ['filter' => 'auth'], function ($routes) {
    $routes->post('pecah', 'Admin\Keluarga::pecah');
 });
 
-$routes->group('mutasi', ['filter' => 'auth'], function ($routes) {
-   $routes->get('', 'Admin\Pindah::index');
-   $routes->get('add', 'Admin\Pindah::add');
-   $routes->get('read', 'Admin\Pindah::read');
-   $routes->get('get_jemaat_aktif', 'Admin\Pindah::get_jemaat_aktif');
-   $routes->get('get_kk_aktif', 'Admin\Pindah::get_kk_aktif');
-   $routes->post('post', 'Admin\Pindah::post');
-   $routes->post('pindah', 'Admin\Pindah::pindah');
-   $routes->put('put', 'Admin\Pindah::put');
-   $routes->delete('delete/(:any)', 'Admin\Pindah::delete/$1');
-});
-
 
 
 $routes->group('laporan', ['filter' => 'auth'], function ($routes) {
@@ -148,6 +123,14 @@ $routes->group('laporan', ['filter' => 'auth'], function ($routes) {
    $routes->get('pindah_excel', 'Admin\Laporan::pindah_excel');
    $routes->get('unsur', 'Admin\Laporan::unsur');
    $routes->post('get_kepala_keluarga', 'Admin\Laporan::get_kepala_keluarga');
+});
+
+$routes->group('kerukunan', ['filter' => 'auth'], function ($routes) {
+   $routes->get('', 'Admin\Kerukunan::index');
+   $routes->get('read', 'Admin\Kerukunan::read');
+   $routes->post('post', 'Admin\Kerukunan::post');
+   $routes->put('put', 'Admin\Kerukunan::put');
+   $routes->delete('delete/(:any)', 'Admin\Kerukunan::delete/$1');
 });
 /*
  * --------------------------------------------------------------------

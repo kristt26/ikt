@@ -57,10 +57,10 @@
             serverSide: true,
             // data: $scope.datas,
             ajax: '/anggota/read',
-            order: [],
+            order: [[3, 'acs']],
             columnDefs: [{
                 targets: '_all',
-                orderable: true
+                orderable: false
             }],
             scrollX: true,
             columns: [{

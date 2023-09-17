@@ -1,8 +1,7 @@
 angular.module('adminctrl', [])
     // Admin
     .controller('dashboardController', dashboardController)
-    .controller('wijkController', wijkController)
-    .controller('kspController', kspController)
+    .controller('kerukunanController', kerukunanController)
     .controller('detailKeluargaController', detailKeluargaController)
     .controller('anggotaController', anggotaController)
     .controller('anggotaUltahController', anggotaUltahController)
@@ -36,12 +35,14 @@ function dashboardController($scope, dashboardServices) {
     // })
 }
 
-function wijkController($scope, wijkServices, pesan) {
+function kerukunanController($scope, kerukunanServices, pesan) {
     $scope.$emit("SendUp", "Pembobotan Faktor");
     $scope.datas = {};
     $scope.model = {};
-    wijkServices.get().then((res) => {
+    $.LoadingOverlay("show");
+    kerukunanServices.get().then((res) => {
         $scope.datas = res;
+        $.LoadingOverlay("hide");
     })
 
     $scope.setInisial = (item) => {
@@ -50,14 +51,17 @@ function wijkController($scope, wijkServices, pesan) {
 
     $scope.save = () => {
         pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
+            $.LoadingOverlay("show");
             if ($scope.model.id) {
-                wijkServices.put($scope.model).then(res => {
+                kerukunanServices.put($scope.model).then(res => {
                     $scope.model = {};
+                    $.LoadingOverlay("hide");
                     pesan.Success("Berhasil mengubah data");
                 })
             } else {
-                wijkServices.post($scope.model).then(res => {
+                kerukunanServices.post($scope.model).then(res => {
                     $scope.model = {};
+                    $.LoadingOverlay("hide");
                     pesan.Success("Berhasil menambah data");
                 })
             }
@@ -70,60 +74,12 @@ function wijkController($scope, wijkServices, pesan) {
 
     $scope.delete = (param) => {
         pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
-            wijkServices.deleted(param).then(res => {
+            $.LoadingOverlay("show");
+            kerukunanServices.deleted(param).then(res => {
+                $.LoadingOverlay("hide");
                 pesan.Success("Berhasil menghapus data");
             })
         });
-    }
-}
-
-function kspController($scope, kspServices, pesan) {
-    $scope.$emit("SendUp", "Pembobotan Faktor");
-    $scope.datas = {};
-    $scope.model = {};
-    $scope.wijk;
-    kspServices.get().then((res) => {
-        $scope.datas = res;
-    })
-
-    $scope.save = (wijk_id) => {
-        pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
-            if ($scope.model.id) {
-                kspServices.put($scope.model).then(res => {
-                    var item = $scope.wijk.ksp.find(x => x.id == res.id);
-                    if (item) {
-                        item.ksp = res.ksp;
-                    }
-                    $scope.model = {};
-                    pesan.Success("Berhasil mengubah data");
-                })
-            } else {
-                $scope.model.wijk_id = wijk_id;
-                kspServices.post($scope.model).then(res => {
-                    $scope.wijk.ksp.push(res);
-                    $scope.model = {};
-                    pesan.Success("Berhasil menambah data");
-                })
-            }
-        })
-    }
-
-    $scope.edit = (item) => {
-        $scope.model = angular.copy(item);
-    }
-
-    $scope.delete = (param) => {
-        pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
-            kspServices.deleted(param).then(res => {
-                var index = $scope.wijk.ksp.indexOf(res);
-                $scope.wijk.ksp.splice(index, 1);
-                pesan.Success("Berhasil menghapus data");
-            })
-        });
-    }
-
-    $scope.show = (item) => {
-        console.log(item);
     }
 }
 
@@ -305,28 +261,24 @@ function editAnggotaController($scope, anggotaServices, helperServices, pesan) {
     $scope.hubungan = helperServices.hubungan;
     $scope.pendidikan = helperServices.pendidikan;
     $scope.pekerjaan = helperServices.pekerjaan;
+    setTimeout(() => {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, 300);
     anggotaServices.getById(helperServices.lastPath).then((res) => {
         $scope.datas = res.kk;
         $scope.kepalaKeluarga = res.kk.anggota;
         $scope.model = res.anggota;
         $scope.model.tanggal_lahir = new Date($scope.model.tanggal_lahir);
-        $scope.baptis = angular.copy(res.baptis);
-        $scope.baptis.tanggal_baptis = new Date($scope.baptis.tanggal_baptis);
-        $scope.sidi = angular.copy(res.sidi);
-        $scope.sidi.tanggal_sidi = new Date($scope.sidi.tanggal_sidi);
-        $scope.nikah = angular.copy(res.nikah);
-        $scope.nikah.tanggal_nikah = new Date($scope.nikah.tanggal_nikah);
     });
 
     $scope.save = () => {
-        $scope.model.baptis = angular.copy($scope.baptis);
-        $scope.model.sidi = angular.copy($scope.sidi);
-        $scope.model.nikah = angular.copy($scope.nikah);
-        $scope.model.baptis.tanggal_baptis = helperServices.dateToString($scope.baptis.tanggal_baptis);
-        $scope.model.sidi.tanggal_sidi = new Date($scope.sidi.tanggal_sidi);
-        $scope.model.nikah.tanggal_nikah = new Date($scope.nikah.tanggal_nikah);
         pesan.dialog("Yakin ingin melanjutkan?", "Ya", "Tidak").then(x => {
+            $.LoadingOverlay('show');
             anggotaServices.put($scope.model).then(res => {
+                $.LoadingOverlay('hide');
                 pesan.Success("Berhasil mengubah data");
                 setInterval(() => {
                     document.location.href = helperServices.url + "anggota";

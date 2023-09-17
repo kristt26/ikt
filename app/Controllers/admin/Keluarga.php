@@ -42,7 +42,15 @@ class Keluarga extends BaseController
                         HAVING COUNT(id) > 1) dup
                     ON keluarga.nomor = dup.nomor
             ")->getResult();
-        $data['keluarga'] = $this->keluarga->findAll();
+        $data['keluarga'] = $this->anggota
+            ->select("keluarga.*, wilayah.wilayah, kerukunan.kerukunan, anggota.nama")
+            ->join("anggota_keluarga", "anggota_keluarga.anggota_id = anggota.id", "left")
+            ->join("keluarga", "keluarga.id = anggota_keluarga.keluarga_id", "left")
+            ->join("wilayah", "wilayah.id = keluarga.wilayah_id", "left")
+            ->join("kerukunan", "kerukunan.id = keluarga.kerukunan_id", "left")
+            ->where("hubungan_keluarga", "KEPALA KELUARGA")
+            ->where("keluarga.deleted_at", null)
+            ->findAll();
         $data['wilayah'] = $this->wilayah->findAll();
         $data['kerukunan'] = $this->kerukunan->findAll();
         return $this->respond($data);
@@ -74,54 +82,43 @@ class Keluarga extends BaseController
         }
     }
 
-    // public function put()
-    // {
-    //     $data = $this->request->getJSON();
-    //     try {
-    //         $this->conn->transBegin();
-    //         $this->kk->update($data->id, $data);
-    //         $this->jemaatKK->update($data->jemaat_kk_id, ['kk_id' => $data->id, 'ksp_id' => $data->ksp_id]);
-    //         $dataAnggota = $this->anggota->asObject()->select("anggota_jemaat.*, anggota_kk.status")->join("anggota_kk", "anggota_kk.anggota_jemaat_id=anggota_jemaat.id")->where("anggota_kk.kk_id", $data->id)->findAll();
-    //         foreach ($dataAnggota as $keyAnggota => $anggota) {
-    //             if (find_item($data->anggota, $anggota->id) == false && $anggota->status == 'Aktif') {
-    //                 $this->anggota->delete($anggota->id);
-    //                 $this->anggotaKeluarga->where("anggota_jemaat_id", $anggota->id)->delete();
-    //                 $this->baptis->where("anggotakk_id", $anggota->id)->delete();
-    //                 $this->sidi->where("anggotakk_id", $anggota->id)->delete();
-    //                 $this->nikah->where("anggotakk_id", $anggota->id)->delete();
-    //             }
-    //         }
-    //         foreach ($data->anggota as $key => $value) {
-    //             if (isset($value->id)) {
-    //                 $this->anggota->update($value->id, $value);
-    //             } else {
-    //                 $this->anggota->insert($value);
-    //                 $value->id = $this->anggota->getInsertID();
-    //                 $this->anggotaKeluarga->insert(["anggota_jemaat_id" => $value->id, "status" => "Aktif", "kk_id" => $data->id]);
-    //                 $value->baptis->anggotakk_id = $value->id;
-    //                 $value->sidi->anggotakk_id = $value->id;
-    //                 $value->nikah->anggotakk_id = $value->id;
-    //             }
-    //             !is_null($value->baptis) && isset($value->baptis->berkas) ? $value->baptis->file = $this->decode->decodebase64($value->baptis->berkas->base64) : false;
-    //             !is_null($value->baptis) && isset($value->baptis->id)  ? $this->baptis->update($value->baptis->id, $value->baptis) : (!is_null($value->baptis) && !isset($value->baptis->id) ? $this->baptis->insert($value->baptis) : "");
-    //             !is_null($value->baptis) && !isset($value->baptis->id) ? $value->baptis->id = $this->baptis->getInsertID() : false;
-
-    //             !is_null($value->sidi) && isset($value->sidi->berkas) ? $value->sidi->file = $this->decode->decodebase64($value->sidi->berkas->base64) : false;
-    //             !is_null($value->sidi) && isset($value->sidi->id)  ? $this->sidi->update($value->sidi->id, $value->sidi) : (!is_null($value->sidi) && !isset($value->sidi->id) ? $this->sidi->insert($value->sidi) : "");
-    //             !is_null($value->sidi) && !isset($value->sidi->id) ? $value->sidi->id = $this->sidi->getInsertID() : false;
-
-    //             !is_null($value->nikah) && isset($value->nikah->berkas) ? $value->nikah->file = $this->decode->decodebase64($value->nikah->berkas->base64) : false;
-    //             !is_null($value->nikah) && isset($value->nikah->id)  ? $this->nikah->update($value->nikah->id, $value->nikah) : (!is_null($value->nikah) && !isset($value->nikah->id) ? $this->nikah->insert($value->nikah) : "");
-    //             !is_null($value->nikah) && !isset($value->nikah->id) ? $value->nikah->id = $this->nikah->getInsertID() : false;
-    //         }
-    //         $this->conn->transCommit();
-    //         logger('notice', $data);
-    //         return $this->respond($data);
-    //     } catch (\Throwable $th) {
-    //         $this->conn->transRollback();
-    //         return $this->fail($th->getMessage());
-    //     }
-    // }
+    public function put()
+    {
+        helper("find");
+        $data = $this->request->getJSON();
+        try {
+            $this->conn->transBegin();
+            $this->keluarga->update($data->id, $data);
+            $dataAnggota = $this->anggota->asObject()
+                ->select("anggota.*")
+                ->join("anggota_keluarga", "anggota_keluarga.anggota_id = anggota.id", "left")
+                ->where("anggota.deleted_at", null)
+                ->where("keluarga_id", $data->id)
+                ->where("deleted_at", null)
+                ->findAll();
+            foreach ($dataAnggota as $keyAnggota => $anggota) {
+                if (find_item($data->anggota, $anggota->id) == false) {
+                    $this->anggota->delete($anggota->id);
+                    // $this->anggotaKK->where("anggota_jemaat_id", $anggota->id)->delete();
+                }
+            }
+            foreach ($data->anggota as $key => $value) {
+                if (isset($value->id)) {
+                    $this->anggota->update($value->id, $value);
+                } else {
+                    $value->id = $this->decode->uid();
+                    $this->anggota->insert($value);
+                    $value->id = $this->anggota->getInsertID();
+                    $this->anggotaKK->insert(['keluarga_id' => $data->id, 'anggota_id' => $value->id]);
+                }
+            }
+            $this->conn->transCommit();
+            return $this->respond($data);
+        } catch (\Throwable $th) {
+            $this->conn->transRollback();
+            return $this->fail($th->getMessage());
+        }
+    }
 
     // public function delete($id)
     // {
@@ -152,17 +149,20 @@ class Keluarga extends BaseController
     //     return view('admin/detail_keluarga');
     // }
 
-    // public function getDetail($id)
-    // {
-    //     $data = $this->kk->getDetail($id);
-    //     $data->anggota = $this->anggota->asObject()->select("anggota_jemaat.*, anggota_kk.id as anggota_kk_id")->join('anggota_kk', 'anggota_kk.anggota_jemaat_id=anggota_jemaat.id')->where('kk_id', $data->id)->where('status', 'Aktif')->findAll();
-    //     foreach ($data->anggota as $key => $anggota) {
-    //         $anggota->baptis = $this->baptis->WHERE('anggotakk_id', $anggota->id)->first();
-    //         $anggota->sidi = $this->sidi->WHERE('anggotakk_id', $anggota->id)->first();
-    //         $anggota->nikah = $this->nikah->WHERE('anggotakk_id', $anggota->id)->first();
-    //     }
-    //     return $this->respond($data);
-    // }
+    public function getDetail($id)
+    {
+        $data = $this->keluarga->asObject()
+        ->select("keluarga.*, wilayah.wilayah, kerukunan.kerukunan")
+        ->join("wilayah", "wilayah.id=keluarga.wilayah_id")
+        ->join("kerukunan", "kerukunan.id=keluarga.kerukunan_id")
+        ->where("keluarga.id", $id)->first();
+        $data->anggota = $this->anggota
+            ->select("anggota.*")
+            ->join('anggota_keluarga', 'anggota_keluarga.anggota_id=anggota.id')
+            ->where('anggota.deleted_at', null)
+            ->where('keluarga_id', $id)->findAll();
+        return $this->respond($data);
+    }
 
     // public function getById($id)
     // {
@@ -179,9 +179,9 @@ class Keluarga extends BaseController
     public function cetak($id)
     {
         $data = $this->keluarga->select("keluarga.*, wilayah.wilayah, kerukunan.kerukunan")
-        ->join('wilayah', 'wilayah.id=keluarga.wilayah_id','left')
-        ->join('kerukunan', 'kerukunan.id=keluarga.kerukunan_id','left')
-        ->where('keluarga.id', $id)->first();
+            ->join('wilayah', 'wilayah.id=keluarga.wilayah_id', 'left')
+            ->join('kerukunan', 'kerukunan.id=keluarga.kerukunan_id', 'left')
+            ->where('keluarga.id', $id)->first();
         $data['anggota'] = $this->anggotaKK->select('anggota.*')
             ->join('anggota', 'anggota.id=anggota_keluarga.anggota_id')
             ->where('keluarga_id', $id)->findAll();

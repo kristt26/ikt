@@ -24,7 +24,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Nomor KK &nbsp;</label>
-                                <input type="text" class="form-control form-control-sm" ng-model="datas.kode_kk" readonly>
+                                <input type="text" class="form-control form-control-sm" ng-model="datas.nomor" readonly>
                             </div>
                         </div>
                         <div class="col-4">
@@ -80,38 +80,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="status_kawin">Status Perkawinan &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.status_kawin.$dirty && signupform.status_kawin.$invalid">
-                                    <small class="" ng-show="signupform.status_kawin.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="status_kawin" id="status_kawin" ui-select2 class="form-control form-control-sm select2" data-placeholder="Status Perkawinan" ng-model="model.status_kawin" required>
-                                    <option value="Belum Kawin">Belum Kawin</option>
-                                    <option value="Kawin">Kawin</option>
-                                    <option value="Duda">Duda</option>
-                                    <option value="Janda">Janda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="unsur">Unsur &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.unsur.$dirty && signupform.unsur.$invalid">
-                                    <small class="" ng-show="signupform.status_kawin.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="unsur" id="unsur" ui-select2 class="form-control form-control-sm select2" data-placeholder="Unsur" ng-model="model.unsur" required>
-                                    <option value="PAR">PAR</option>
-                                    <option value="PAM">PAM</option>
-                                    <option value="PW">PW</option>
-                                    <option value="PKB">PKB</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -138,15 +106,15 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="sex">Jenis Kelamin &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.sex.$dirty && signupform.sex.$invalid">
-                                    <small class="" ng-show="signupform.sex.$error.required">
+                                <label for="gender">Jenis Kelamin &nbsp;</label>
+                                <span style="color: red;" ng-show="signupform.gender.$dirty && signupform.gender.$invalid">
+                                    <small class="" ng-show="signupform.gender.$error.required">
                                         Wajib*
                                     </small>
                                 </span>
-                                <select name="sex" id="sex" ui-select2 class="form-control form-control-sm select2" data-placeholder="Jenis Kelamin" ng-model="model.sex" required>
-                                    <option value="LAKI-LAKI">LAKI-LAKI</option>
-                                    <option value="PEREMPUAN">PEREMPUAN</option>
+                                <select name="gender" id="gender" ui-select2 class="form-control form-control-sm select2" data-placeholder="Jenis Kelamin" ng-model="model.gender" required>
+                                    <option value="L">LAKI-LAKI</option>
+                                    <option value="P">PEREMPUAN</option>
                                 </select>
                             </div>
                         </div>
@@ -162,7 +130,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2">
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
                             <div class="form-group">
                                 <label for="agama">Agama &nbsp;</label>
                                 <span style="color: red;" ng-show="signupform.agama.$dirty && signupform.agama.$invalid">
@@ -174,8 +145,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col">
                             <div class="form-group">
                                 <label for="pendidikan">Pendidikan Terakhir &nbsp;</label>
@@ -186,17 +155,6 @@
                                 </span>
                                 <select name="pendidikan" id="pendidikan" ui-select2 class="form-control form-control-sm select2" data-placeholder="--Pendidikan terakhir--" ng-options="item as item for item in pendidikan" ng-model="model.pendidikan_terakhir" required>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="gelar_terakhir">Gelar Terakhir &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.gelar_terakhir.$dirty && signupform.gelar_terakhir.$invalid">
-                                    <small class="" ng-show="signupform.gelar_terakhir.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <input type="text" class="form-control form-control-sm" name="gelar_terakhir" id="gelar_terakhir" ng-model="model.gelar_terakhir" placeholder="Gelar Terakhir" required>
                             </div>
                         </div>
                         <div class="col">
@@ -211,208 +169,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="gereja_asal">Asal gereja &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.gereja_asal.$dirty && signupform.gereja_asal.$invalid">
-                                    <small class="" ng-show="signupform.gereja_asal.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <input type="text" class="form-control form-control-sm" name="gereja_asal" id="gereja_asal" ng-model="model.asal_gereja" placeholder="Asal Gereja" required>
-                            </div>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="nama_ayah">Nama Ayah &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.nama_ayah.$dirty && signupform.nama_ayah.$invalid">
-                                    <small class="" ng-show="signupform.nama_ayah.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <input type="text" class="form-control form-control-sm" name="nama_ayah" id="nama_ayah" ng-model="model.nama_ayah" placeholder="Nama ayah" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="nama_ibu">Nama ibu &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.nama_ibu.$dirty && signupform.nama_ibu.$invalid">
-                                    <small class="" ng-show="signupform.nama_ibu.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <input type="text" class="form-control form-control-sm" name="nama_ibu" id="nama_ibu" ng-model="model.nama_ibu" placeholder="Nama ibu" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="suku">Asal Suku &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.suku.$dirty && signupform.suku.$invalid">
-                                    <small class="" ng-show="signupform.suku.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <input type="text" class="form-control form-control-sm" name="suku" id="suku" ng-model="model.suku" placeholder="Suku asal" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="status_domisili">Status Domisili &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.status_domisili.$dirty && signupform.status_domisili.$invalid">
-                                    <small class="" ng-show="signupform.status_domisili.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="status_domisili" id="status_domisili" ui-select2 class="form-control form-control-sm select2" data-placeholder="Status domisili" ng-model="model.status_domisili" required>
-                                    <option value="Tetap">Tetap</option>
-                                    <option value="Tidak Tetap">Tidak Tetap</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="nikah_gereja">Nikah Gereja &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.nikah_gereja.$dirty && signupform.nikah_gereja.$invalid">
-                                    <small class="" ng-show="signupform.nikah_gereja.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="nikah_gereja" ng-model="model.nikah_gereja" id="nikah_gereja" ui-select2 class="form-control form-control-sm select2" data-placeholder="Status domisili" required>
-                                    <option value="0">Belum</option>
-                                    <option value="1">Sudah</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="disabilitas">Disabilitas &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.disabilitas.$dirty && signupform.disabilitas.$invalid">
-                                    <small class="" ng-show="signupform.disabilitas.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="disabilitas" ng-model="model.disabilitas" id="disabilitas" ui-select2 class="form-control form-control-sm select2" data-placeholder="Status domisili" required>
-                                    <option value="0">Tidak</option>
-                                    <option value="1">Ya</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="status_narkoba">Status Narkoba &nbsp;</label>
-                                <span style="color: red;" ng-show="signupform.status_narkoba.$dirty && signupform.status_narkoba.$invalid">
-                                    <small class="" ng-show="signupform.status_narkoba.$error.required">
-                                        Wajib*
-                                    </small>
-                                </span>
-                                <select name="status_narkoba" ng-model="model.status_narkoba" id="status_narkoba" ui-select2 class="form-control form-control-sm select2" data-placeholder="Status domisili" required>
-                                    <option value="0">Tidak</option>
-                                    <option value="1">Ya</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Baptis -->
-                    <div class="row mt-4" style="padding: 0rem 1rem;">
-                        <div class="col text-center" style="background-color:yellow;">
-                            <label for=" status_domisili">Jika <strong>SUDAH</strong> Baptis, SIDI dan Nikah wajib
-                                mengisi nama gereja dan tanggal pelaksanaannya</label>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col">
-                            <h4 style="background-color: #b66dff; padding: 0.5rem 0.4rem;">Data Baptis</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tempar_baptis">Nama Gereja &nbsp;</label>
-
-                                <input type="text" class="form-control form-control-sm" name="tempar_baptis" id="tempar_baptis" ng-model="baptis.nama_gereja" placeholder="Gereja tempat baptis">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tanggal_baptis">Tanggal Baptis &nbsp;</label>
-
-                                <input type="date" class="form-control form-control-sm" name="tanggal_baptis" id="tanggal_baptis" ng-model="baptis.tanggal_baptis">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="berkas_baptis">Surat Baptis;</label>
-                                <input type="file" class="form-control form-control-sm" name="berkas_baptis" accept="image/*, application/pdf" id="berkas_baptis" ng-model="baptis.berkas" base-sixty-four-input>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- SIDI -->
-                    <div class="row mt-2">
-                        <div class="col">
-                            <h4 style="background-color: #b66dff; padding: 0.5rem 0.4rem;">Data Sidi</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tempar_sidi">Tempat SIDI &nbsp;</label>
-                                <input type="text" class="form-control form-control-sm" name="tempar_sidi" id="tempar_sidi" ng-model="sidi.nama_gereja" placeholder="Gereja tempat SIDI">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tanggal_sidi">Tanggal SIDI &nbsp;</label>
-
-                                <input type="date" class="form-control form-control-sm" name="tanggal_sidi" id="tanggal_sidi" ng-model="sidi.tanggal_sidi">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="berkas_sidi">Surat SIDI;</label>
-                                <input type="file" class="form-control form-control-sm" name="berkas_sidi" accept="image/*, application/pdf" id="berkas_sidi" ng-model="sidi.berkas" base-sixty-four-input>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Nikah -->
-                    <div class="row mt-2" ng-if="model.status_kawin && model.status_kawin == 'Kawin'">
-                        <div class="col">
-                            <h4 style="background-color: #b66dff; padding: 0.5rem 0.4rem;">Data Nikah</h4>
-                        </div>
-                    </div>
-                    <div class="row" ng-if="model.status_kawin && model.status_kawin == 'Kawin'">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tempar_nikah">Tempat Nikah &nbsp;</label>
-                                <input type="text" class="form-control form-control-sm" name="tempar_nikah" id="tempar_nikah" ng-model="nikah.nama_gereja" placeholder="Gereja tempat SIDI">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="tanggal_nikah">Tanggal Nikah &nbsp;</label>
-                                <input type="date" class="form-control form-control-sm" name="tanggal_nikah" id="tanggal_nikah" ng-model="nikah.tanggal_nikah">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="berkas_nikah">Surat Nikah;</label>
-                                <input type="file" class="form-control form-control-sm" name="berkas_nikah" accept="image/*, application/pdf" id="berkas_nikah" ng-model="nikah.berkas" base-sixty-four-input>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mb-5">
                         <a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary">
                             <span class="mdi mdi-arrow-left-bold"></span> Batal
                         </a>
                         <button type="submit" ng-class="{'btn btn-success': !statusEdit, 'btn btn-warning': statusEdit}">
                             <span class="mdi mdi-plus-circle"></span> {{model.id ? 'Ubah' : 'Tambah'}}
                         </button>
-
                     </div>
                 </form>
                 <!-- Data KK -->
