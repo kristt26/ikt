@@ -23,8 +23,9 @@
         <!-- <div class="row p-0 m-0" id="proBanner" style="margin-bottom: 200px;"></div> -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href=""><img src="<?= base_url('temp') ?>/assets/images/logo-spenja.png" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="<?= base_url('temp') ?>/assets/images/mini-logo.png" alt="logo" /></a>
+                <a class="navbar-brand brand-logo" href=""><img src="<?= base_url('temp') ?>/assets/images/logoIKT.png" alt="logo" /></a>
+                <!-- <a class="navbar-brand brand-logo-mini" href="index.html"><img src="<?= base_url('temp') ?>/assets/images/logoIKT.png" alt="logo" /></a> -->
+
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -75,8 +76,8 @@
                 <div class="content-wrapper">
                     <!-- content -->
                     <?= $this->renderSection('content') ?>
-                    <view-comp></view-comp>
-                    <banner-comp></banner-comp>
+                    <!-- <view-comp></view-comp>
+                    <banner-comp></banner-comp> -->
                     <!-- end content -->
                 </div>
                 <footer class="footer fixed-bottom" style="padding: 13px 1rem;">

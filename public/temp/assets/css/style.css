@@ -13769,17 +13769,17 @@ dl {
       .navbar .navbar-brand-wrapper .navbar-brand:active, .navbar .navbar-brand-wrapper .navbar-brand:focus, .navbar .navbar-brand-wrapper .navbar-brand:hover {
         color: #1b2658; }
       .navbar .navbar-brand-wrapper .navbar-brand img {
-        width: calc(260px - 120px);
+        width: calc(273px - 79px);
         max-width: 100%;
-        height: 28px;
+        height: 57px;
         margin: auto;
         vertical-align: middle; }
       .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
         display: none; }
         .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
-          width: calc(70px - 50px);
+          width: calc(70px - 21px);
           max-width: 100%;
-          height: 28px;
+          height: 47px;
           margin: auto; }
   .navbar .navbar-menu-wrapper {
     transition: width 0.25s ease;

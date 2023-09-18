@@ -22,7 +22,7 @@
 
                     <div class="card-body">
                         <img src="<?= base_url() ?>/temp/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Jiwa <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                        <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Kerukunan <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
                         <a href="<?= base_url('anggota') ?>">
                             <h2 class="mb-5">
@@ -38,7 +38,7 @@
                 <div class="card bg-gradient-info card-img-holder text-white">
                     <div class="card-body">
                         <img src="<?= base_url() ?>/temp/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-normal mb-3" style="color:black">Jumlah KK <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                        <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Keluarga <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                         </h4>
                         <a href="<?= base_url('keluarga') ?>">
                             <h2 class="mb-5">
@@ -53,7 +53,7 @@
                 <div class="card bg-gradient-success card-img-holder text-white">
                     <div class="card-body">
                         <img src="<?= base_url() ?>/temp/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-normal mb-3" style="color:black">Ulang tahun minggu depan <i class=" mdi mdi-account-check mdi-24px float-right"></i>
+                        <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Anggota <i class=" mdi mdi-account-check mdi-24px float-right"></i>
                         </h4>
                         <a href="<?= base_url('anggota/ultah') ?>">
                             <h2 class="mb-5">

@@ -181,7 +181,7 @@ function formController($scope, helperServices, keluargaServices, wilayahService
                         console.log("Test");
                     });
                 }, 100);
-                return "<button class='btn btn-info btn-sm' id='add'>Tambah data</button>";
+                return "<button type='button' class='btn btn-info btn-sm' id='add'>Tambah data</button>";
             }
         },
         escapeMarkup: function (markup) {
