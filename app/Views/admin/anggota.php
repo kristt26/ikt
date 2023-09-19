@@ -13,6 +13,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+            <a href="<?= base_url()?>/laporan/cetak_anggota" class="btn btn-primary btn-sm mb-2" id="myButton" target="_blank"><i class="mdi mdi-file-excel-box"></i> Export</a>
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-sm table-hover table-striped table-bordered" id="table" width = "100%">

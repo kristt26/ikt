@@ -90,7 +90,8 @@ function helperServices($location) {
 
     service.unsur = ['PAR', 'PAM', 'PW', 'PKB']
 
-    service.golonganDarah = ["A",
+    service.golonganDarah = [
+        "A",
         "B",
         "AB",
         "O",
@@ -102,7 +103,8 @@ function helperServices($location) {
         "AB-",
         "O+",
         "O-",
-        "TIDAK TAHU"
+        "TIDAK TAHU",
+        "ALL"
     ];
     service.agama = ["ISLAM",
         "KRISTEN",

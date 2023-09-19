@@ -74,14 +74,13 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('laporan') ?>">
                     <span class="menu-title">Laporan</span>
                     <i class="mdi mdi-file-chart menu-icon"></i>
                 </a>
-            </li> -->
-
+            </li> 
             <!-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#cetak" aria-expanded="false" aria-controls="cetak">
                 <span class="menu-title">Cetak </span>

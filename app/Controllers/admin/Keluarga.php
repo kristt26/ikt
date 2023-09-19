@@ -144,10 +144,10 @@ class Keluarga extends BaseController
     //     }
     // }
 
-    // public function detail($id)
-    // {
-    //     return view('admin/detail_keluarga');
-    // }
+    public function detail($id)
+    {
+        return view('admin/detail_keluarga');
+    }
 
     public function getDetail($id)
     {
@@ -164,17 +164,17 @@ class Keluarga extends BaseController
         return $this->respond($data);
     }
 
-    // public function getById($id)
-    // {
-    //     $data = $this->kk->getDetail($id);
-    //     $data->anggota = $this->anggota->asObject()->getById($id);
-    //     foreach ($data->anggota as $key => $anggota) {
-    //         $anggota->baptis = $this->baptis->WHERE('anggotakk_id', $anggota->id)->first();
-    //         $anggota->sidi = $this->sidi->WHERE('anggotakk_id', $anggota->id)->first();
-    //         $anggota->nikah = $this->nikah->WHERE('anggotakk_id', $anggota->id)->first();
-    //     }
-    //     return $this->respond($data);
-    // }
+    public function getById($id)
+    {
+        $data = $this->kk->getDetail($id);
+        $data->anggota = $this->anggota->asObject()->getById($id);
+        foreach ($data->anggota as $key => $anggota) {
+            $anggota->baptis = $this->baptis->WHERE('anggotakk_id', $anggota->id)->first();
+            $anggota->sidi = $this->sidi->WHERE('anggotakk_id', $anggota->id)->first();
+            $anggota->nikah = $this->nikah->WHERE('anggotakk_id', $anggota->id)->first();
+        }
+        return $this->respond($data);
+    }
 
     public function cetak($id)
     {
@@ -188,16 +188,31 @@ class Keluarga extends BaseController
         return view('admin/cetak_kk', $data);
     }
 
-    // public function cetak_all()
-    // {
-    //     $param = $this->request->getGet();
-    //     $data = $this->kk->laporanKeluarga(isset($param['wijk_id']) ? dekrip($param['wijk_id']) : NULL, isset($param['ksp_id']) ? dekrip($param['ksp_id']) : NULL);
-    //     foreach ($data as $keyKel => $kel) {
-    //         $data[$keyKel]['anggota'] = $this->anggota->getByKK($kel['id']);
-    //     }
-    //     $set['kk'] = $data;
-    //     return view('admin/cetak_all_kk', $set);
-    // }
+    public function cetak_all()
+    {
+        $param = $this->request->getGet();
+        $data = $this->anggota
+        ->select("keluarga.*, wilayah.wilayah, kerukunan.kerukunan, anggota.nama")
+        ->join("anggota_keluarga", "anggota_keluarga.anggota_id = anggota.id", "left")
+        ->join("keluarga", "keluarga.id = anggota_keluarga.keluarga_id", "left")
+        ->join("wilayah", "wilayah.id = keluarga.wilayah_id", "left")
+        ->join("kerukunan", "kerukunan.id = keluarga.kerukunan_id", "left")
+        ->where("hubungan_keluarga", "KEPALA KELUARGA")
+        ->where("keluarga.deleted_at", null)
+        ->findAll();
+        $anggota = $this->anggota->select("anggota.*, anggota_keluarga.keluarga_id")
+        ->join("anggota_keluarga", "anggota_keluarga.anggota_id = anggota.id")
+        ->where('deleted_at', null)->findAll();
+        foreach ($data as $keyKel => $kel) {
+            $data[$keyKel]['anggota'] = [];
+            foreach ($anggota as $keyAng => $ang) {
+                if($kel['id']==$ang['keluarga_id']) $data[$keyKel]['anggota'][] = $ang;
+            }
+            // $data[$keyKel]['anggota'] = $this->anggota->getByKK($kel['id']);
+        }
+        $set['kk'] = $data;
+        return view('admin/cetak_all_kk', $set);
+    }
 
     // public function pecah()
     // {

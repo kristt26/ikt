@@ -228,7 +228,7 @@ function addAnggotaController($scope, anggotaServices, helperServices, keluargaS
     keluargaServices.getId(helperServices.lastPath).then((res) => {
         $scope.datas = res;
         $scope.kepalaKeluarga = res.anggota.find(x => x.hubungan_keluarga == 'KEPALA KELUARGA');
-        $scope.model.kk_id = res.id;
+        $scope.model.keluarga_id = res.id;
     });
 
     $scope.save = () => {
@@ -289,7 +289,7 @@ function editAnggotaController($scope, anggotaServices, helperServices, pesan) {
 }
 
 function golonganDarahController($scope, anggotaServices, helperServices, pesan, DTOptionsBuilder) {
-    $scope.$emit("SendUp", "Data Anggota");
+    $scope.$emit("SendUp", "Golongan Darah");
     $scope.datas = {};
     $scope.golonganDarah = helperServices.golonganDarah;
     $scope.dtOptions = DTOptionsBuilder.newOptions().withOption('scrollX', '100%');
@@ -1237,37 +1237,19 @@ function laporanKepalaKeluargaController($scope, laporanServices, kspServices, p
     $scope.dtOptions = DTOptionsBuilder.newOptions().withOption('scrollX', '100%');
     $scope.unsurs = helperServices.unsur;
     $.LoadingOverlay("show");
-    kspServices.get().then((res) => {
-        $scope.wijks = res;
+    laporanServices.getKepalaKeluarga().then((res) => {
         $.LoadingOverlay("hide");
+        $scope.datas = res
     })
 
-    $scope.viewData = (wijk, ksp) => {
-        $.LoadingOverlay("show");
-        var item = { wijk: wijk ? wijk.id : undefined, ksp_id: ksp ? ksp.id : undefined }
-        laporanServices.getKepalaKeluarga(item).then((res) => {
-            $.LoadingOverlay("hide");
-            $scope.datas = res
-        })
-    }
+    // $scope.viewData = () => {
+    // }
 
     $scope.cetak = (wijk, ksp, statusCetak) => {
         if (statusCetak == 'kepala') {
-            if (wijk && ksp) {
-                window.open(helperServices.url + "laporan/print?item=" + helperServices.encript('kepalaKeluarga') + "&ksp_id=" + helperServices.enkrip(ksp.id), "_blank");
-            } else if (wijk && !ksp) {
-                window.open(helperServices.url + "laporan/print?item=" + helperServices.encript('kepalaKeluarga') + "&wijk_id=" + helperServices.enkrip(wijk.id), "_blank");
-            } else {
-                pesan.error("WIJK belum di pilih");
-            }
+            window.open(helperServices.url + "laporan/print?item=" + helperServices.encript('kepalaKeluarga'));
         } else if (statusCetak == 'anggota') {
-            if (wijk && ksp) {
-                window.open(helperServices.url + 'keluarga/cetakall?ksp_id=' + helperServices.enkrip(ksp.id), "_blank");
-            } else if (wijk && !ksp) {
-                window.open(helperServices.url + 'keluarga/cetakall?wijk_id=' + helperServices.enkrip(wijk.id), "_blank");
-            } else {
-                pesan.error("WIJK belum di pilih");
-            }
+            window.open(helperServices.url + 'keluarga/cetakall');
         } else {
             pesan.error('Pilih Model Data');
         }
@@ -1287,7 +1269,7 @@ function laporanKepalaKeluargaController($scope, laporanServices, kspServices, p
 }
 
 function laporanController($scope, layananBaptisServices, persyaratanServices, wijkServices, helperServices, pesan, DTOptionsBuilder, $sce) {
-    $scope.$emit("SendUp", "Manajemen Baptis");
+    $scope.$emit("SendUp", "Laporan Anggota");
     $scope.datas = {};
     $scope.anggotaJemaat = [];
     $scope.dtOptions = DTOptionsBuilder.newOptions().withOption('scrollX', '100%');

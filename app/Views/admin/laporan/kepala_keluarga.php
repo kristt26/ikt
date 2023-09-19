@@ -29,49 +29,32 @@
 
     </div>
     <!-- <button class="btn btn-primary btn-sm mb-2" id="myButton" ng-click="cetak(wijk, ksp)"><i class="mdi mdi-file-excel-box"></i> Export</button> -->
-    <div class="d-flex justify-content-start mb-1">
-        <div class="col-3">
-            <select class="form-select" ng-options="item as item.wijk for item in wijks" ng-model="wijk" ng-change="viewData(wijk, ksp)" aria-label="Default select example">
-                <option value="">---Pilih WIJK---</option>
-            </select>
-        </div>
-        <div class="col-3" style="margin-left: 12px;" ng-show="wijk">
-            <select class="form-select" ng-options="item as item.ksp for item in wijk.ksp" ng-model="ksp" ng-change="viewData(wijk, ksp)" aria-label="Default select example">
-                <option value="">---Pilih KSP---</option>
-            </select>
-        </div>
-    </div>
+    
     <div class="border-bottom mb-3"></div>
     <div class="table-responsive">
         <table datatable="ng" dt-options="dtOptions" class="table table-sm table-hover table-striped table-bordered" width="99%">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kode KK</th>
-                    <th>Unsur</th>
+                    <th>Nomor Keluarga</th>
                     <th>Nama</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Status Perkawinan</th>
-                    <th>Pendidikan</th>
-                    <th>Pekerjaan</th>
-                    <th>Suku</th>
-                    <th>Status Domisili</th>
+                    <th>Wilayah</th>
+                    <th>Kontak</th>
+                    <th>Alamat</th>
+                    <th>Status Tinggal</th>
+                    <th>Kerukunan</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="item in datas track by item.id">
                     <td>{{$index+1}}</td>
-                    <td>{{item.kode_kk}}</td>
-                    <td>{{item.unsur}}</td>
+                    <td>{{item.nomor}}</td>
                     <td>{{item.nama}}</td>
-                    <td>{{item.tanggal_lahir}}</td>
-                    <td>{{item.sex}}</td>
-                    <td>{{item.status_kawin}}</td>
-                    <td>{{item.pendidikan_terakhir}}</td>
-                    <td>{{item.pekerjaan}}</td>
-                    <td>{{item.suku}}</td>
-                    <td>{{item.status_domisili}}</td>
+                    <td>{{item.wilayah}}</td>
+                    <td>{{item.kontak}}</td>
+                    <td>{{item.alamat}}</td>
+                    <td>{{item.status_tinggal}}</td>
+                    <td>{{item.kerukunan}}</td>
                 </tr>
             </tbody>
         </table>

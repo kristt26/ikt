@@ -71,10 +71,10 @@
         <section class="vh-lg-100 mt-5 mt-lg-0 d-flex align-items-center">
             <div class="container">
                 <div class="text-center">
-                    <img src="<?= base_url('temp') ?>/assets/images/logo-login.png" alt="" width="12%">
+                    <img src="<?= base_url('temp') ?>/assets/images/IKT.png" alt="" width="12%">
                 </div>
                 <h4 class="d-flex align-items-center justify-content-center text-center">
-                    S P E N J A <br> Sistem Pendataan Jemaat
+                    Sistem Pendataan Anggota IKT
                 </h4>
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex align-items-center justify-content-center">

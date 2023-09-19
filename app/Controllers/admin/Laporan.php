@@ -39,14 +39,9 @@ class Laporan extends BaseController
     public function index()
     {
         $list['lists'] = [
-            ["url" => enkrip("layakBaptis"), "text" => "Baptis"],
-            ["url" => enkrip("layakSidi"), "text" => "SIDI"],
             ["url" => enkrip("kepalaKeluarga"), "text" => "Keluarga"],
-            ["url" => enkrip("anggotaJemaat"), "text" => "Anggota Jemaat"],
             ["url" => enkrip("ulangTahun"), "text" => "Ulang Tahun"],
             ["url" => enkrip("golonganDarah"), "text" => "Golongan Darah"],
-            ["url" => enkrip("lansia"), "text" => "Lansia"],
-            ["url" => enkrip("meninggal"), "text" => "Meninggal"],
             // ["url" => enkrip("disabilitas"), "text" => "Disabilitas"],
             // ["url" => enkrip("narkoba"), "text" => "Nakoba"],
             // ["url" => enkrip("nikahGereja"), "text" => "Nikah Gereja"],
@@ -54,45 +49,13 @@ class Laporan extends BaseController
         ];
         $setItem = $this->request->getGet("item");
         if (is_null($setItem)) {
-            $list['title'] = "Baptis";
-            $list['url'] = enkrip("layakBaptis");
-            return view('admin/laporan/layak_baptis', $list);
-        } else if (dekrip($setItem) == "layakBaptis") {
-            $list['title'] = "Baptis";
-            $list['url'] = enkrip("layakBaptis");
-            return view('admin/laporan/layak_baptis', $list);
-        } else if (dekrip($setItem) == "layakSidi") {
-            $list['title'] = "SIDI";
-            $list['url'] = enkrip("layakSidi");
-            return view('admin/laporan/layak_sidi', $list);
-        } else if (dekrip($setItem) == "kepalaKeluarga") {
             $list['title'] = "Kepala Keluarga";
             $list['url'] = enkrip("kepalaKeluarga");
             return view('admin/laporan/kepala_keluarga', $list);
-        } else if (dekrip($setItem) == "anggotaJemaat") {
-            $list['title'] = "Anggota Jemaat";
-            $list['url'] = enkrip("anggotaJemaat");
-            return view('admin/laporan/anggota_jemaat', $list);
-        } else if (dekrip($setItem) == "ulangTahun") {
-            $list['title'] = "Ulang Tahun";
-            $list['url'] = enkrip("ulangTahun");
-            return view('admin/laporan/ulang_tahun', $list);
         } else if (dekrip($setItem) == "golonganDarah") {
             $list['title'] = "Golongan Darah";
             $list['url'] = enkrip("golonganDarah");
             return view('admin/laporan/golongan_darah', $list);
-        } else if (dekrip($setItem) == "lansia") {
-            $list['title'] = "Lansia";
-            $list['url'] = enkrip("lansia");
-            return view('admin/laporan/lansia', $list);
-        } else if (dekrip($setItem) == "unsur") {
-            $list['title'] = "Unsur";
-            $list['url'] = enkrip("unsur");
-            return view('admin/laporan/unsur', $list);
-        } else if (dekrip($setItem) == "meninggal") {
-            $list['title'] = "Meninggal";
-            $list['url'] = enkrip("meninggal");
-            return view('admin/laporan/meninggal', $list);
         }
         // else if (dekrip($setItem) == "disabilitas") {
         //     $list['title'] = "Disabilitas";
@@ -257,12 +220,12 @@ class Laporan extends BaseController
             // dd($param);
             $list['title'] = "Kepala Keluarga";
             $data['anggota'] = $this->anggota
-            ->select("keluarga.*, anggota_keluarga.keluarga_id, anggota.nama, wilayah.wilayah, kerukunan.kerukunan")
-            ->join("anggota_keluarga", "anggota_keluarga.anggota_id=anggota.id", "left")
-            ->join("keluarga", "anggota_keluarga.keluarga_id=keluarga.id", "left")
-            ->join("wilayah", "wilayah.id=keluarga.wilayah_id", "left")
-            ->join("kerukunan", "kerukunan.id=keluarga.kerukunan_id", "left")
-            ->where('hubungan_keluarga', "KEPALA KELUARGA")->findAll();
+                ->select("keluarga.*, anggota_keluarga.keluarga_id, anggota.nama, wilayah.wilayah, kerukunan.kerukunan")
+                ->join("anggota_keluarga", "anggota_keluarga.anggota_id=anggota.id", "left")
+                ->join("keluarga", "anggota_keluarga.keluarga_id=keluarga.id", "left")
+                ->join("wilayah", "wilayah.id=keluarga.wilayah_id", "left")
+                ->join("kerukunan", "kerukunan.id=keluarga.kerukunan_id", "left")
+                ->where('hubungan_keluarga', "KEPALA KELUARGA")->findAll();
             return view('admin/laporan/cetak_kepala_keluarga', $data);
         }
     }
@@ -510,126 +473,49 @@ class Laporan extends BaseController
         $sheet = $spreadsheet->setActiveSheetIndex(0);
         $setItem = $this->request->getGet("item");
         $sheet->setCellValue('A3', 'NO')
-            ->setCellValue('B3', 'WIJK/KSP')
-            ->setCellValue('C3', 'KODE KK')
-            ->setCellValue('D3', 'NAMA LENGKAP')
-            ->setCellValue('E3', 'JENIS KELAMIN')
-            ->setCellValue('F3', 'TEMPAT LAHIR')
-            ->setCellValue('G3', 'TANGGAL LAHIR')
-            ->setCellValue('H3', 'GOLONGAN DARAH')
-            ->setCellValue('I3', 'STATUS KAWIN')
-            ->setCellValue('J3', 'HUBUNGAN KELUARGA')
-            ->setCellValue('K3', 'PENDIDIKAN TERAKHIR')
-            ->setCellValue('L3', 'GELAR')
-            ->setCellValue('M3', 'PEKERJAAN')
-            ->setCellValue('N3', 'ASAL GEREJA')
-            ->setCellValue('O3', 'NAMA AYAH')
-            ->setCellValue('P3', 'NAMA IBU')
-            ->setCellValue('Q3', 'SUKU')
-            ->setCellValue('R3', 'STATUS DOMISILI')
-            ->setCellValue('S3', 'UNSUR')
-            ->setCellValue('T3', 'KEPALA KELUARGA')
-            ->setCellValue('U3', 'UMUR')
-            ->setCellValue('V3', 'DISABILITAS')
-            ->setCellValue('W3', 'BARKOBA')
-            ->setCellValue('X3', 'NIKAH GEREJA');
-        $spreadsheet->getActiveSheet()->mergeCells("A1:X1");
-        $spreadsheet->getActiveSheet()->mergeCells("A2:X2");
+            ->setCellValue('B3', 'NIK')
+            ->setCellValue('C3', 'NAMA')
+            ->setCellValue('D3', 'JENIS KELAMIN')
+            ->setCellValue('E3', 'TTL')
+            ->setCellValue('F3', 'GOLONGAN DARAH')
+            ->setCellValue('G3', 'AGAMA')
+            ->setCellValue('H3', 'HUBUNGAN KELUARGA')
+            ->setCellValue('I3', 'PEKERJAAN');
+        $spreadsheet->getActiveSheet()->mergeCells("A1:I1");
+        $spreadsheet->getActiveSheet()->mergeCells("A2:I2");
         $spreadsheet->getActiveSheet()->getStyle("A1")->getFont()->setBold(true)->setSize(16);
         $spreadsheet->getActiveSheet()->getStyle("A2")->getFont()->setBold(true)->setSize(16);
-        $spreadsheet->getActiveSheet()->getStyle("A3:X3")->getFont()->setBold(true)->setSize(12);
         $spreadsheet->getActiveSheet()->getStyle("A1")->getAlignment()->setHorizontal('center');
         $spreadsheet->getActiveSheet()->getStyle("A2")->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle("A3:X3")->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle("A3:X3")->getAlignment()->setVertical('center');
         $spreadsheet->getActiveSheet()->getStyle("I3")->getAlignment()->setWrapText(true);
         $spreadsheet->getActiveSheet()->getStyle("G3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("J3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("K3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("E3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("H3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("R3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("S3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("X3")->getAlignment()->setWrapText(true);
 
         $spreadsheet->getActiveSheet()->getColumnDimension("A")->setWidth(35, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("B")->setWidth(89, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("C")->setWidth(69, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(221, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(94, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("F")->setWidth(115, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("B")->setWidth(147, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("C")->setWidth(214, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(100, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(181, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("F")->setWidth(129, 'px');
         $spreadsheet->getActiveSheet()->getColumnDimension("G")->setWidth(92, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("H")->setWidth(89, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("I")->setWidth(97, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("J")->setWidth(141, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("K")->setWidth(222, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("L")->setWidth(75, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("M")->setWidth(245, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("N")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("O")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("P")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("Q")->setWidth(116, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("R")->setWidth(86, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("S")->setWidth(55, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("T")->setWidth(208, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("V")->setWidth(85, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("W")->setWidth(85, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("X")->setWidth(85, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("H")->setWidth(201, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("I")->setWidth(222, 'px');
         $spreadsheet->getActiveSheet()->getRowDimension("3")->setRowHeight(33.75);
-        $sheet->setCellValue('A1', 'GEREJA KRISTEN INJILI DI TANAH PAPUA');
+        $sheet->setCellValue('A1', 'IKATAN KELUARGA TORAJA (IKT)');
 
-        $data = $this->anggota->LaporanAnggotaJemaat(
-            session()->get('jemaat_id'),
-            isset($param['wijk_id']) ? dekrip($param['wijk_id']) : NULL,
-            isset($param['ksp_id']) ? dekrip($param['ksp_id']) : NULL,
-            isset($param['unsur']) ? dekrip($param['unsur']) : NULL
-        );
-
-        if (isset($param['wijk_id']) && !isset($param['ksp_id']) && !isset($param['unsur'])) {
-            $wijk = $this->wijk->where('id', dekrip($param['wijk_id']))->first()['wijk'];
-            $pesan = " WIJK " . strtoupper($wijk);
-        } else if (isset($param['ksp_id']) && isset($param['unsur'])) {
-            $ksp = $this->ksp->where('id', dekrip($param['ksp_id']))->first();
-            $wijk = $this->wijk->first($ksp['wijk_id']);
-            $pesan = " WIJK " . strtoupper($wijk['wijk']) . " | KSP " . $ksp['ksp'] . " | UNSUR " . strtoupper(dekrip($param['unsur']));
-        } else if (isset($param['wijk_id']) && !isset($param['ksp_id']) && isset($param['unsur'])) {
-            $wijk = $this->wijk->where('id', dekrip($param['wijk_id']))->first();
-            $pesan = " WIJK " . strtoupper($wijk['wijk']) . " | UNSUR " . strtoupper(dekrip($param['unsur']));
-        } else if (!isset($param['wijk_id']) && !isset($param['ksp_id']) && isset($param['unsur'])) {
-            $pesan = " UNSUR " . strtoupper(dekrip($param['unsur']));
-        } else if (isset($param['ksp_id']) && !isset($param['unsur'])) {
-            $ksp = $this->ksp->where('id', dekrip($param['ksp_id']))->first();
-            $wijk = $this->wijk->first($ksp['wijk_id']);
-            $pesan = " WIJK " . strtoupper($wijk['wijk']) . " | KSP " . $ksp['ksp'];
-        }
-        $sheet->setCellValue('A2', 'DAFTAR ANGGOTA JEMAAT' . $pesan);
+        $data = $this->anggota->asObject()->where('deleted_at', null)->findAll();
+        $sheet->setCellValue('A2', 'DAFTAR ANGGOTA IKT');
         $styleArray = ['borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,],]];
-        $spreadsheet->getActiveSheet()->getStyle("A3:X" . count($data) + 3)->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle("A3:I" . count($data) + 3)->applyFromArray($styleArray);
         foreach ($data as $key => $anggota) {
             $sheet->setCellValue('A' . $key + 4, $key + 1)
-                ->setCellValue('B' . $key + 4, $anggota->wijk . '/' . $anggota->ksp)
-                ->setCellValue('C' . $key + 4, $anggota->kode_kk)
-                ->setCellValue('D' . $key + 4, $anggota->nama)
-                ->setCellValue('E' . $key + 4, $anggota->sex)
-                ->setCellValue('F' . $key + 4, $anggota->tempat_lahir)
-                ->setCellValue('G' . $key + 4, $anggota->tanggal_lahir)
-                ->setCellValue('H' . $key + 4, $anggota->golongan_darah)
-                ->setCellValue('I' . $key + 4, $anggota->status_kawin)
-                ->setCellValue('J' . $key + 4, $anggota->hubungan_keluarga)
-                ->setCellValue('K' . $key + 4, $anggota->pendidikan_terakhir)
-                ->setCellValue('L' . $key + 4, $anggota->gelar_terakhir)
-                ->setCellValue('M' . $key + 4, $anggota->pekerjaan)
-                ->setCellValue('N' . $key + 4, $anggota->asal_gereja)
-                ->setCellValue('O' . $key + 4, $anggota->nama_ayah)
-                ->setCellValue('P' . $key + 4, $anggota->nama_ibu)
-                ->setCellValue('Q' . $key + 4, $anggota->suku)
-                ->setCellValue('R' . $key + 4, $anggota->status_domisili)
-                ->setCellValue('S' . $key + 4, $anggota->unsur)
-                ->setCellValue('T' . $key + 4, $anggota->kepala)
-                ->setCellValue('U' . $key + 4, $anggota->umur)
-                ->setCellValue('V' . $key + 4, $anggota->disabilitas == '0' ? 'Tidak' : 'Ya')
-                ->setCellValue('W' . $key + 4, $anggota->status_narkoba == '0' ? 'Tidak' : 'Ya')
-                ->setCellValue('X' . $key + 4, $anggota->nikah_gereja == '0' ? 'Belum' : 'Sudah');
+                ->setCellValue('B' . $key + 4, $anggota->nik)
+                ->setCellValue('C' . $key + 4, $anggota->nama)
+                ->setCellValue('D' . $key + 4, $anggota->gender)
+                ->setCellValue('E' . $key + 4, $anggota->tempat_lahir . ', ' . $anggota->tanggal_lahir)
+                ->setCellValue('F' . $key + 4, $anggota->golongan_darah)
+                ->setCellValue('G' . $key + 4, $anggota->agama)
+                ->setCellValue('H' . $key + 4, $anggota->hubungan_keluarga)
+                ->setCellValue('I' . $key + 4, $anggota->pekerjaan);
         }
         $writer = new Xlsx($spreadsheet);
         $filename = date('Y-m-d-His') . '-Data Anggota';
@@ -793,86 +679,50 @@ class Laporan extends BaseController
         $sheet = $spreadsheet->setActiveSheetIndex(0);
         $setItem = $this->request->getGet("item");
         $sheet->setCellValue('A3', 'NO')
-            ->setCellValue('B3', 'WIJK/KSP')
-            ->setCellValue('C3', 'KODE KK')
-            ->setCellValue('D3', 'NAMA LENGKAP')
-            ->setCellValue('E3', 'JENIS KELAMIN')
-            ->setCellValue('F3', 'TEMPAT LAHIR')
-            ->setCellValue('G3', 'TANGGAL LAHIR')
-            ->setCellValue('H3', 'GOLONGAN DARAH')
-            ->setCellValue('I3', 'STATUS KAWIN')
-            ->setCellValue('J3', 'HUBUNGAN KELUARGA')
-            ->setCellValue('K3', 'PENDIDIKAN')
-            ->setCellValue('L3', 'GELAR')
-            ->setCellValue('M3', 'PEKERJAAN')
-            ->setCellValue('N3', 'ASAL GEREJA')
-            ->setCellValue('O3', 'NAMA AYAH')
-            ->setCellValue('P3', 'NAMA IBU')
-            ->setCellValue('Q3', 'SUKU')
-            ->setCellValue('R3', 'STATUS DOMISILI')
-            ->setCellValue('S3', 'UNSUR');
-        $spreadsheet->getActiveSheet()->mergeCells("A1:S1");
-        $spreadsheet->getActiveSheet()->mergeCells("A2:S2");
+            ->setCellValue('B3', 'NIK')
+            ->setCellValue('C3', 'NAMA')
+            ->setCellValue('D3', 'JENIS KELAMIN')
+            ->setCellValue('E3', 'TTL')
+            ->setCellValue('F3', 'GOLONGAN DARAH')
+            ->setCellValue('G3', 'AGAMA')
+            ->setCellValue('H3', 'HUBUNGAN KELUARGA')
+            ->setCellValue('I3', 'PEKERJAAN');
+        $spreadsheet->getActiveSheet()->mergeCells("A1:I1");
+        $spreadsheet->getActiveSheet()->mergeCells("A2:I2");
         $spreadsheet->getActiveSheet()->getStyle("A1")->getFont()->setBold(true)->setSize(16);
         $spreadsheet->getActiveSheet()->getStyle("A2")->getFont()->setBold(true)->setSize(16);
-        $spreadsheet->getActiveSheet()->getStyle("A3:S3")->getFont()->setBold(true)->setSize(12);
         $spreadsheet->getActiveSheet()->getStyle("A1")->getAlignment()->setHorizontal('center');
         $spreadsheet->getActiveSheet()->getStyle("A2")->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle("A3:S3")->getAlignment()->setHorizontal('center');
-        $spreadsheet->getActiveSheet()->getStyle("A3:S3")->getAlignment()->setVertical('center');
         $spreadsheet->getActiveSheet()->getStyle("I3")->getAlignment()->setWrapText(true);
         $spreadsheet->getActiveSheet()->getStyle("G3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("J3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("E3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("H3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("R3")->getAlignment()->setWrapText(true);
-        $spreadsheet->getActiveSheet()->getStyle("S3")->getAlignment()->setWrapText(true);
 
         $spreadsheet->getActiveSheet()->getColumnDimension("A")->setWidth(35, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("B")->setWidth(89, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("C")->setWidth(69, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(221, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(94, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("F")->setWidth(115, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("B")->setWidth(147, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("C")->setWidth(214, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(100, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(181, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("F")->setWidth(129, 'px');
         $spreadsheet->getActiveSheet()->getColumnDimension("G")->setWidth(92, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("H")->setWidth(89, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("I")->setWidth(97, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("J")->setWidth(141, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("K")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("L")->setWidth(75, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("M")->setWidth(245, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("N")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("O")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("P")->setWidth(170, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("Q")->setWidth(116, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("R")->setWidth(86, 'px');
-        $spreadsheet->getActiveSheet()->getColumnDimension("S")->setWidth(55, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("H")->setWidth(201, 'px');
+        $spreadsheet->getActiveSheet()->getColumnDimension("I")->setWidth(222, 'px');
         $spreadsheet->getActiveSheet()->getRowDimension("3")->setRowHeight(33.75);
-        $sheet->setCellValue('A1', 'GEREJA KRISTEN INJILI DI TANAH PAPUA');
-        $data = $this->anggota->getGolonganDarah(session()->get('jemaat_id'), dekrip($darah));
-        $sheet->setCellValue('A2', 'DAFTAR ANGGOTA JEMAAT BERGOLONGAN DARAH ' . '"' . dekrip($darah) . '"');
+        $sheet->setCellValue('A1', 'IKATAN KELUARGA TORAJA (IKT)');
+
+        if(dekrip($darah)=="null" || dekrip($darah)=="ALL") $data = $this->anggota->asObject()->where('deleted_at', null)->findAll();
+        else $data = $this->anggota->asObject()->where('golongan_darah', dekrip($darah))->where('deleted_at', null)->findAll();
+        $sheet->setCellValue('A2', 'DAFTAR ANGGOTA IKT BERDASARKAN GOLONGAN DARAH');
         $styleArray = ['borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,],]];
-        $spreadsheet->getActiveSheet()->getStyle("A3:S" . count($data) + 3)->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle("A3:I" . count($data) + 3)->applyFromArray($styleArray);
         foreach ($data as $key => $anggota) {
             $sheet->setCellValue('A' . $key + 4, $key + 1)
-                ->setCellValue('B' . $key + 4, $anggota->wijk . '/' . $anggota->ksp)
-                ->setCellValue('C' . $key + 4, $anggota->kode_kk)
-                ->setCellValue('D' . $key + 4, $anggota->nama)
-                ->setCellValue('E' . $key + 4, $anggota->sex)
-                ->setCellValue('F' . $key + 4, $anggota->tempat_lahir)
-                ->setCellValue('G' . $key + 4, $anggota->tanggal_lahir)
-                ->setCellValue('H' . $key + 4, $anggota->golongan_darah)
-                ->setCellValue('I' . $key + 4, $anggota->status_kawin)
-                ->setCellValue('J' . $key + 4, $anggota->hubungan_keluarga)
-                ->setCellValue('K' . $key + 4, $anggota->pendidikan_terakhir)
-                ->setCellValue('L' . $key + 4, $anggota->gelar_terakhir)
-                ->setCellValue('M' . $key + 4, $anggota->pekerjaan)
-                ->setCellValue('N' . $key + 4, $anggota->asal_gereja)
-                ->setCellValue('O' . $key + 4, $anggota->nama_ayah)
-                ->setCellValue('P' . $key + 4, $anggota->nama_ibu)
-                ->setCellValue('Q' . $key + 4, $anggota->suku)
-                ->setCellValue('R' . $key + 4, $anggota->status_domisili)
-                ->setCellValue('S' . $key + 4, $anggota->unsur);
+                ->setCellValue('B' . $key + 4, $anggota->nik)
+                ->setCellValue('C' . $key + 4, $anggota->nama)
+                ->setCellValue('D' . $key + 4, $anggota->gender)
+                ->setCellValue('E' . $key + 4, $anggota->tempat_lahir . ', ' . $anggota->tanggal_lahir)
+                ->setCellValue('F' . $key + 4, $anggota->golongan_darah)
+                ->setCellValue('G' . $key + 4, $anggota->agama)
+                ->setCellValue('H' . $key + 4, $anggota->hubungan_keluarga)
+                ->setCellValue('I' . $key + 4, $anggota->pekerjaan);
         }
         $writer = new Xlsx($spreadsheet);
         $filename = date('Y-m-d-His') . '-golongan-darah';
@@ -897,7 +747,15 @@ class Laporan extends BaseController
     {
         $param = (array) $data = $this->request->getJSON();
         // dd($param);
-        $data = $this->jemaatKK->LaporanKepalaKeluarga(session()->get('jemaat_id'), isset($param['wijk']) ? $param['wijk'] : NULL, isset($param['ksp_id']) ? $param['ksp_id'] : NULL)->getResult();
+        $data = $this->anggota
+            ->select("keluarga.*, wilayah.wilayah, kerukunan.kerukunan, anggota.nama")
+            ->join("anggota_keluarga", "anggota_keluarga.anggota_id = anggota.id", "left")
+            ->join("keluarga", "keluarga.id = anggota_keluarga.keluarga_id", "left")
+            ->join("wilayah", "wilayah.id = keluarga.wilayah_id", "left")
+            ->join("kerukunan", "kerukunan.id = keluarga.kerukunan_id", "left")
+            ->where("hubungan_keluarga", "KEPALA KELUARGA")
+            ->where("keluarga.deleted_at", null)
+            ->findAll();
         return $this->respond($data);
     }
 }

@@ -11,12 +11,17 @@ class Anggota extends BaseController
     use ResponseTrait;
     protected $keluarga;
     protected $anggota;
+    protected $anggotaKeluarga;
     protected $conn;
+    protected $decode;
     public function __construct()
     {
         $this->keluarga = new \App\Models\KeluargaModel();
         $this->anggota = new \App\Models\AnggotaModel();
+        $this->anggotaKeluarga = new \App\Models\AnggotaKeluargaModel();
         $this->conn = \Config\Database::connect();
+        $this->decode = new \App\Libraries\Decode();
+        helper("find");
     }
 
     public function index()
@@ -60,29 +65,10 @@ class Anggota extends BaseController
         $value = $this->request->getJSON();
         try {
             $this->conn->transBegin();
+            $value->id = $this->decode->uid();
             $this->anggota->insert($value);
-            $value->id = $this->anggota->getInsertID();
-            $this->anggotaKeluarga->insert(['anggota_jemaat_id' => $value->id, 'kk_id' => $value->kk_id, 'status' => 'Aktif']);
-            if (isset($value->baptis)) {
-                $value->baptis->anggotakk_id = $value->id;
-                $value->baptis->file = isset($value->baptis->berkas) ? $this->decode->decodebase64($value->baptis->berkas->base64) : NULL;
-                $this->baptis->insert($value->baptis);
-                $value->baptis->id = $this->baptis->getInsertID();
-            }
-            if (isset($value->sidi)) {
-                $value->sidi->anggotakk_id = $value->id;
-                $value->sidi->file = isset($value->sidi->berkas) ? $this->decode->decodebase64($value->sidi->berkas->base64) : NULL;
-                $this->sidi->insert($value->sidi);
-                $value->sidi->id = $this->sidi->getInsertID();
-            }
-            if (isset($value->nikah)) {
-                $value->nikah->anggotakk_id = $value->id;
-                $value->nikah->file = isset($value->nikah->berkas) ? $this->decode->decodebase64($value->nikah->berkas->base64) : NULL;
-                $this->nikah->insert($value->nikah);
-                $value->nikah->id = $this->nikah->getInsertID();
-            }
+            $this->anggotaKeluarga->insert(['keluarga_id' => $value->keluarga_id, 'anggota_id' => $value->id]);
             $this->conn->transCommit();
-            logger('notice', $value);
             return $this->respond($value);
         } catch (\Throwable $th) {
             $this->conn->transRollback();
@@ -132,12 +118,10 @@ class Anggota extends BaseController
 
     public function getGolonganDarah()
     {
-        $param = $this->request->getGet('darah');
-        $data = $this->anggota->getGolonganDarah(session()->get('jemaat_id'), dekrip($param));
-        foreach ($data as $key => $value) {
-            $itemKK = $this->jemaatKk->getKepalaKeluarga(session()->get('jemaat_id'), $value->kk_id);
-            $value->kepala_keluarga = !is_null($itemKK) ? $itemKK->nama : "";
-        }
+        $item = $this->request->getGet('darah');
+        $param = dekrip($item);
+        if($param=="null" || $param=="ALL") $data = $this->anggota->findAll();
+        else $data = $this->anggota->where("golongan_darah", $param)->findAll();
         return $this->respond($data);
     }
 

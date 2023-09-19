@@ -631,6 +631,7 @@ function anggotaServices($http, $q, helperServices, AuthService, pesan) {
             (err) => {
                 pesan.error(err.data.message);
                 def.reject(err);
+                $.LoadingOverlay("hide");
             }
         );
         return def.promise;
