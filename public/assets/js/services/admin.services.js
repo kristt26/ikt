@@ -3,17 +3,10 @@ angular.module('admin.service', [])
     .factory('dashboardServices', dashboardServices)
     .factory('wilayahServices', wilayahServices)
     .factory('kerukunanServices', kerukunanServices)
-    .factory('kspServices', kspServices)
     .factory('keluargaServices', keluargaServices)
     .factory('anggotaServices', anggotaServices)
     .factory('gerejaServices', gerejaServices)
     .factory('manajemenUsersServices', manajemenUsersServices)
-    .factory('persyaratanServices', persyaratanServices)
-    .factory('kelengkapanServices', kelengkapanServices)
-    .factory('baptisServices', baptisServices)
-    .factory('manajemenBaptisServices', manajemenBaptisServices)
-    .factory('manajemenSidiServices', manajemenSidiServices)
-    .factory('manajemenNikahServices', manajemenNikahServices)
     .factory('laporanAnggotaServices', laporanAnggotaServices)
     .factory('laporanServices', laporanServices)
     .factory('pindahJemaatServices', pindahJemaatServices)
@@ -72,87 +65,104 @@ function dashboardServices($http, $q, helperServices, AuthService) {
 }
 
 function wilayahServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = "https://wilayah.gki-iat.org/api/wilayah/v1/";
+    var controller = helperServices.url + 'wilayah/';
     var service = {};
     service.data = [];
     return {
-        prov: prov,
-        kab: kab,
-        kec: kec,
-        kel: kel
+        get: get,
+        post: post,
+        put: put,
+        deleted: deleted
     };
 
-    function prov() {
+    function get() {
         var def = $q.defer();
         $http({
             method: 'get',
-            url: controller + 'provinsi',
+            url: controller + 'read',
             headers: AuthService.getHeader()
         }).then(
             (res) => {
+                service.data = res.data;
                 def.resolve(res.data);
             },
             (err) => {
-                message.error(err.data.message);
+                pesan.error(err.data.message);
                 def.reject(err);
+                $.LoadingOverlay('hide');
             }
         );
         return def.promise;
     }
 
-    function kab(id) {
+    function post(param) {
         var def = $q.defer();
         $http({
-            method: 'get',
-            url: controller + 'kabupaten/' + id,
+            method: 'post',
+            url: controller + 'post',
+            data: param,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
+                service.data.push(res.data);
                 def.resolve(res.data);
             },
             (err) => {
-                message.error(err.data.message);
+                pesan.error(err.data.messages.error);
                 def.reject(err);
+                $.LoadingOverlay('hide');
             }
         );
         return def.promise;
     }
 
-    function kec(id) {
+    function put(param) {
         var def = $q.defer();
         $http({
-            method: 'get',
-            url: controller + 'kecamatan/' + id,
+            method: 'put',
+            url: controller + 'put',
+            data: param,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
+                var data = service.data.find(x => x.id == param.id);
+                if (data) {
+                    data.kerukunan = param.kerukunan;
+                }
                 def.resolve(res.data);
             },
             (err) => {
-                message.error(err.data.message);
                 def.reject(err);
+                pesan.error(err.data.messages.error);
+                $.LoadingOverlay('hide');
             }
         );
         return def.promise;
     }
 
-    function kel(id) {
+    function deleted(param) {
         var def = $q.defer();
         $http({
-            method: 'get',
-            url: controller + 'kelurahan/' + id,
+            method: 'delete',
+            url: controller + "/delete/" + param.id,
             headers: AuthService.getHeader()
         }).then(
             (res) => {
+                var index = service.data.indexOf(param);
+                service.data.splice(index, 1);
                 def.resolve(res.data);
             },
             (err) => {
-                message.error(err.data.message);
                 def.reject(err);
+                if(err.data.code==500){
+                    pesan.error("Data wilayah ini tidak dapat dihapus\nkarena sedang digunakan di data keluarga!");
+                }
+                $.LoadingOverlay('hide');
             }
         );
         return def.promise;
     }
+
 }
 
 function kerukunanServices($http, $q, helperServices, AuthService, pesan) {
@@ -242,110 +252,6 @@ function kerukunanServices($http, $q, helperServices, AuthService, pesan) {
             (err) => {
                 def.reject(err);
                 message.error(err.data.message)
-            }
-        );
-        return def.promise;
-    }
-
-}
-
-function kspServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'ksp/';
-    var service = {};
-    service.data = [];
-    return {
-        get: get,
-        post: post,
-        put: put,
-        deleted: deleted
-    };
-
-    function get() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'read',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                message.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    data.ksp.push(res.data);
-                }
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.Error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var item = data.ksp.find(x => x.id == param.id);
-                    if (item) {
-                        item.ksp = param.ksp;
-                    }
-                }
-                def.resolve(res.data);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
-            }
-        );
-        return def.promise;
-    }
-
-    function deleted(param) {
-        var def = $q.defer();
-        $http({
-            method: 'delete',
-            url: controller + "/delete/" + param.id,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var index = data.ksp.indexOf(param);
-                    data.ksp.splice(index, 1);
-                }
-                def.resolve(param);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
             }
         );
         return def.promise;
@@ -704,108 +610,6 @@ function anggotaServices($http, $q, helperServices, AuthService, pesan) {
 
 }
 
-function gerejaServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'gereja/';
-    var service = {};
-    service.data = [];
-    return {
-        get: get,
-        post: post,
-        put: put,
-        deleted: deleted
-    };
-
-    function get() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'read',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data.push(res.data)
-                def.resolve(res.data);
-            },
-            (err) => {
-                $.LoadingOverlay("hide");
-                pesan.Error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var item = data.ksp.find(x => x.id == param.id);
-                    if (item) {
-                        item.ksp = param.ksp;
-                    }
-                }
-                def.resolve(res.data);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
-            }
-        );
-        return def.promise;
-    }
-
-    function deleted(param) {
-        var def = $q.defer();
-        $http({
-            method: 'delete',
-            url: controller + "/delete/" + param.id,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var index = data.ksp.indexOf(param);
-                    data.ksp.splice(index, 1);
-                }
-                def.resolve(param);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
-            }
-        );
-        return def.promise;
-    }
-
-}
-
 function manajemenUsersServices($http, $q, helperServices, AuthService, pesan) {
     var controller = helperServices.url + 'manajemen_user/';
     var service = {};
@@ -899,609 +703,6 @@ function manajemenUsersServices($http, $q, helperServices, AuthService, pesan) {
         return def.promise;
     }
 
-}
-
-function persyaratanServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'persyaratan/';
-    var service = {};
-    service.data = [];
-    return {
-        get: get,
-        getByLayanan: getByLayanan,
-        post: post,
-        put: put,
-        deleted: deleted
-    };
-
-    function get() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'read',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getByLayanan(id) {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'read_by_layanan?id=' + id,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.layanan_id);
-                if (data) {
-                    data.persyaratan.push(res.data);
-                }
-                def.resolve(res.data);
-            },
-            (err) => {
-                $.LoadingOverlay("hide");
-                pesan.Error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var item = data.ksp.find(x => x.id == param.id);
-                    if (item) {
-                        item.ksp = param.ksp;
-                    }
-                }
-                def.resolve(res.data);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
-            }
-        );
-        return def.promise;
-    }
-
-    function deleted(param) {
-        var def = $q.defer();
-        $http({
-            method: 'delete',
-            url: controller + "/delete/" + param.id,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                var data = service.data.find(x => x.id == param.wijk_id);
-                if (data) {
-                    var index = data.ksp.indexOf(param);
-                    data.ksp.splice(index, 1);
-                }
-                def.resolve(param);
-            },
-            (err) => {
-                def.reject(err);
-                pesan.Error(err.data.messages.error);
-            }
-        );
-        return def.promise;
-    }
-}
-
-function baptisServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'baptis/';
-    var service = {};
-    service.data = [];
-    return {
-        getPengajuan: getPengajuan,
-        getProses: getProses,
-        getSelesai: getSelesai,
-    };
-
-    function getPengajuan() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_pengajuan',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getProses() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_proses',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getSelesai() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_selesai',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-}
-
-function kelengkapanServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'kelengkapan/';
-    var service = {};
-    service.data = [];
-    return {
-        getByPendaftaran: getByPendaftaran
-    };
-
-    function getByPendaftaran(id) {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_by_pendaftaran/' + id,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-}
-
-function manajemenBaptisServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'manajemen_baptis/';
-    var service = {};
-    service.data = [];
-    return {
-        getPengajuan: getPengajuan,
-        getProses: getProses,
-        getSelesai: getSelesai,
-        getAdd: getAdd,
-        post: post,
-        put: put,
-    };
-
-    function getPengajuan() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_pengajuan',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getProses() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_proses',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getSelesai() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_selesai',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getAdd() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'add',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-}
-
-function manajemenSidiServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'manajemen_sidi/';
-    var service = {};
-    service.data = [];
-    return {
-        getPengajuan: getPengajuan,
-        getProses: getProses,
-        getSelesai: getSelesai,
-        getAdd: getAdd,
-        post: post,
-        put: put,
-    };
-
-    function getPengajuan() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_pengajuan',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getProses() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_proses',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getSelesai() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_selesai',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getAdd() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'add',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-}
-
-function manajemenNikahServices($http, $q, helperServices, AuthService, pesan) {
-    var controller = helperServices.url + 'manajemen_nikah/';
-    var service = {};
-    service.data = [];
-    return {
-        getPengajuan: getPengajuan,
-        getProses: getProses,
-        getSelesai: getSelesai,
-        getAdd: getAdd,
-        post: post,
-        put: put,
-    };
-
-    function getPengajuan() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_pengajuan',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getProses() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_proses',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getSelesai() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'get_selesai',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function getAdd() {
-        var def = $q.defer();
-        $http({
-            method: 'get',
-            url: controller + 'add',
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                service.data = res.data;
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.message);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function post(param) {
-        var def = $q.defer();
-        $http({
-            method: 'post',
-            url: controller + 'post',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
-
-    function put(param) {
-        var def = $q.defer();
-        $http({
-            method: 'put',
-            url: controller + 'put',
-            data: param,
-            headers: AuthService.getHeader()
-        }).then(
-            (res) => {
-                def.resolve(res.data);
-            },
-            (err) => {
-                pesan.error(err.data.messages.error);
-                def.reject(err);
-            }
-        );
-        return def.promise;
-    }
 }
 
 function laporanAnggotaServices($http, $q, helperServices, AuthService, pesan) {

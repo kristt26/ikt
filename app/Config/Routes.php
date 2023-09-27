@@ -132,6 +132,14 @@ $routes->group('kerukunan', ['filter' => 'auth'], function ($routes) {
    $routes->put('put', 'Admin\Kerukunan::put');
    $routes->delete('delete/(:any)', 'Admin\Kerukunan::delete/$1');
 });
+
+$routes->group('wilayah', ['filter' => 'auth'], function ($routes) {
+   $routes->get('', 'Admin\wilayah::index');
+   $routes->get('read', 'Admin\wilayah::read');
+   $routes->post('post', 'Admin\wilayah::post');
+   $routes->put('put', 'Admin\wilayah::put');
+   $routes->delete('delete/(:any)', 'Admin\wilayah::delete/$1');
+});
 /*
  * --------------------------------------------------------------------
  * End Admin Gereja

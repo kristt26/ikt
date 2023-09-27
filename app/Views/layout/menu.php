@@ -30,8 +30,8 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"> <a class="nav-link" href="<?= base_url('kerukunan') ?>">Kerukunan</a>
                         </li>
-                        <!-- <li class="nav-item"> <a class="nav-link" href="<?= base_url('ksp') ?>">KSP</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="<?= base_url('manajemen_user') ?>">Manajemen User</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="<?= base_url('wilayah') ?>">Wilayah</a></li>
+                        <!-- <li class="nav-item"> <a class="nav-link" href="<?= base_url('manajemen_user') ?>">Manajemen User</a></li>
                         <li class="nav-item"> <a class="nav-link" href="<?= base_url('persyaratan') ?>">Persyaratan</a></li> -->
                     </ul>
                 </div>
