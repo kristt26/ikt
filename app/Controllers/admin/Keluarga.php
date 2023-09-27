@@ -120,29 +120,28 @@ class Keluarga extends BaseController
         }
     }
 
-    // public function delete($id)
-    // {
-    //     try {
-    //         $this->conn->transBegin();
-    //         $anggotakk = $this->anggotaKeluarga->asObject()->where('kk_id', $id)->findAll();
-    //         $data = $this->kk->first($id);
-    //         $this->kk->delete($id);
-    //         foreach ($anggotakk as $key => $anggota) {
-    //             $this->anggota->delete($anggota->anggota_jemaat_id);
-    //         }
-    //         if ($this->conn->transStatus()) {
-    //             $this->conn->transCommit();
-    //             logger('notice', $data);
-    //             return $this->respond(true);
-    //         } else {
-    //             $this->conn->transRollback();
-    //             return $this->fail("Gagal Hapus");
-    //         }
-    //     } catch (\Throwable $th) {
-    //         $this->conn->transRollback();
-    //         return $this->fail("Gagal Hapus");
-    //     }
-    // }
+    public function delete($id)
+    {
+        try {
+            $this->conn->transBegin();
+            $anggotakk = $this->anggotaKK->asObject()->where('keluarga_id', $id)->findAll();
+            $this->keluarga->delete($id);
+            foreach ($anggotakk as $key => $anggota) {
+                $this->anggota->delete($anggota->anggota_id);
+            }
+            $this->anggotaKK->where('keluarga_id', $id)->delete();
+            if ($this->conn->transStatus()) {
+                $this->conn->transCommit();
+                return $this->respond(true);
+            } else {
+                $this->conn->transRollback();
+                return $this->fail("Gagal Hapus");
+            }
+        } catch (\Throwable $th) {
+            $this->conn->transRollback();
+            return $this->fail("Gagal Hapus");
+        }
+    }
 
     public function detail($id)
     {

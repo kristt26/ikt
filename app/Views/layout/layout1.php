@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="appss">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="//code.tidio.co/apx8pxmx3mgnv2s5jhh8fbfxckwpbkcr.js" async></script>
 </head>
-
 <body ng-controller="indexController">
     <div class="container-scroller">
         <!-- <div class="row p-0 m-0" id="proBanner" style="margin-bottom: 200px;"></div> -->
@@ -25,7 +23,6 @@
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo" href=""><img src="<?= base_url('temp') ?>/assets/images/logoIKT.png" alt="logo" /></a>
                 <!-- <a class="navbar-brand brand-logo-mini" href="index.html"><img src="<?= base_url('temp') ?>/assets/images/logoIKT.png" alt="logo" /></a> -->
-
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -67,11 +64,9 @@
             </div>
         </nav>
         <div class="container-fluid page-body-wrapper">
-
             <!-- Menu -->
             <?= view('layout/menu'); ?>
             <!-- end menu -->
-
             <div class="main-panel">
                 <div class="content-wrapper">
                     <!-- content -->
@@ -118,7 +113,6 @@
     <script src="<?= base_url() ?>/assets/libs/datatables/dataTables.responsive.min.js"></script>
     <script src="<?= base_url() ?>/assets/libs/datatables/btn.js"></script>
     <script src="<?= base_url() ?>/assets/libs/datatables/print.js"></script>
-
     <script src="<?= base_url('temp') ?>/assets/vendors/js/vendor.bundle.base.js"></script>
     <script src="<?= base_url('temp') ?>/assets/vendors/chart.js/Chart.min.js"></script>
     <script src="<?= base_url('temp') ?>/assets/js/jquery.cookie.js" type="text/javascript"></script>
@@ -128,14 +122,10 @@
     <!-- <script src="<?= base_url('temp') ?>/assets/js/dashboard.js"></script> -->
     <script src="<?= base_url('temp') ?>/assets/js/todolist.js"></script>
     <script src="<?= base_url() ?>/assets/libs/loading/dist/loadingoverlay.min.js"></script>
-
     <script src="<?= base_url('temp') ?>/assets/js/script.js"></script>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-
 </body>
-
 </html>

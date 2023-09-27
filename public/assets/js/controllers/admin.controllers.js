@@ -1,21 +1,18 @@
 angular.module('adminctrl', [])
     // Admin
     .controller('dashboardController', dashboardController)
-    .controller('kerukunanController', kerukunanController)
     .controller('wilayahController', wilayahController)
+    .controller('kerukunanController', kerukunanController)
     .controller('detailKeluargaController', detailKeluargaController)
     .controller('anggotaController', anggotaController)
     .controller('anggotaUltahController', anggotaUltahController)
     .controller('addAnggotaController', addAnggotaController)
     .controller('editAnggotaController', editAnggotaController)
     .controller('golonganDarahController', golonganDarahController)
-    .controller('gerejaController', gerejaController)
-    .controller('manajemenUsersController', manajemenUsersController)
     .controller('laporanAnggotaJemaatController', laporanAnggotaJemaatController)
     .controller('laporanKepalaKeluargaController', laporanKepalaKeluargaController)
     .controller('laporanController', laporanController)
     .controller('pindahJemaatController', pindahJemaatController)
-    // Anggota Jemaat
 
     ;
 
@@ -26,54 +23,6 @@ function dashboardController($scope, dashboardServices) {
     // dashboardServices.get().then(res=>{
     //     $scope.datas = res;
     // })
-}
-
-function kerukunanController($scope, kerukunanServices, pesan) {
-    $scope.$emit("SendUp", "Pembobotan Faktor");
-    $scope.datas = {};
-    $scope.model = {};
-    $.LoadingOverlay("show");
-    kerukunanServices.get().then((res) => {
-        $scope.datas = res;
-        $.LoadingOverlay("hide");
-    })
-
-    $scope.setInisial = (item) => {
-        $scope.model.inisial = item.substring(0, 3).toUpperCase();
-    }
-
-    $scope.save = () => {
-        pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
-            $.LoadingOverlay("show");
-            if ($scope.model.id) {
-                kerukunanServices.put($scope.model).then(res => {
-                    $scope.model = {};
-                    $.LoadingOverlay("hide");
-                    pesan.Success("Berhasil mengubah data");
-                })
-            } else {
-                kerukunanServices.post($scope.model).then(res => {
-                    $scope.model = {};
-                    $.LoadingOverlay("hide");
-                    pesan.Success("Berhasil menambah data");
-                })
-            }
-        })
-    }
-
-    $scope.edit = (item) => {
-        $scope.model = angular.copy(item);
-    }
-
-    $scope.delete = (param) => {
-        pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
-            $.LoadingOverlay("show");
-            kerukunanServices.deleted(param).then(res => {
-                $.LoadingOverlay("hide");
-                pesan.Success("Berhasil menghapus data");
-            })
-        });
-    }
 }
 
 function wilayahController($scope, wilayahServices, pesan) {
@@ -117,6 +66,54 @@ function wilayahController($scope, wilayahServices, pesan) {
         pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
             $.LoadingOverlay("show");
             wilayahServices.deleted(param).then(res => {
+                $.LoadingOverlay("hide");
+                pesan.Success("Berhasil menghapus data");
+            })
+        });
+    }
+}
+
+function kerukunanController($scope, kerukunanServices, pesan) {
+    $scope.$emit("SendUp", "Pembobotan Faktor");
+    $scope.datas = {};
+    $scope.model = {};
+    $.LoadingOverlay("show");
+    kerukunanServices.get().then((res) => {
+        $scope.datas = res;
+        $.LoadingOverlay("hide");
+    })
+
+    $scope.setInisial = (item) => {
+        $scope.model.inisial = item.substring(0, 3).toUpperCase();
+    }
+
+    $scope.save = () => {
+        pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
+            $.LoadingOverlay("show");
+            if ($scope.model.id) {
+                kerukunanServices.put($scope.model).then(res => {
+                    $scope.model = {};
+                    $.LoadingOverlay("hide");
+                    pesan.Success("Berhasil mengubah data");
+                })
+            } else {
+                kerukunanServices.post($scope.model).then(res => {
+                    $scope.model = {};
+                    $.LoadingOverlay("hide");
+                    pesan.Success("Berhasil menambah data");
+                })
+            }
+        })
+    }
+
+    $scope.edit = (item) => {
+        $scope.model = angular.copy(item);
+    }
+
+    $scope.delete = (param) => {
+        pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
+            $.LoadingOverlay("show");
+            kerukunanServices.deleted(param).then(res => {
                 $.LoadingOverlay("hide");
                 pesan.Success("Berhasil menghapus data");
             })
@@ -351,91 +348,7 @@ function golonganDarahController($scope, anggotaServices, helperServices, pesan,
     }
 }
 
-function gerejaController($scope, gerejaServices, helperServices, pesan) {
-    $scope.$emit("SendUp", "Data Anggota");
-    $scope.model = {};
-    $scope.datas = {};
-    $scope.baptis = {};
-    gerejaServices.get(helperServices.lastPath).then((res) => {
-        $scope.datas = res;
-    });
 
-    $scope.save = () => {
-        pesan.dialog("Yakin ingin melanjutkan?", "Ya", "Tidak").then(x => {
-            $.LoadingOverlay("show");
-            if ($scope.model.id) {
-                gerejaServices.put($scope.model).then(res => {
-                    $.LoadingOverlay("hide");
-                    pesan.Success("Berhasil mengubah data");
-                    $scope.model = {};
-                });
-            } else {
-                gerejaServices.post($scope.model).then(res => {
-                    $.LoadingOverlay("hide");
-                    pesan.Success("Berhasil menambah data");
-                    $scope.model = {};
-                });
-            }
-        })
-    }
-}
-
-function manajemenUsersController($scope, manajemenUsersServices, pesan, helperServices, DTOptionsBuilder) {
-    $scope.$emit("SendUp", "Manajemen User");
-    $scope.datas = {};
-    $scope.model = {};
-    $scope.dtOptions = DTOptionsBuilder.newOptions().withOption('scrollX', '100%');
-    manajemenUsersServices.get().then((res) => {
-        $scope.datas = res;
-    })
-
-    $scope.setPin = (item) => {
-        $scope.model.anggota_jemaat_id = item.anggota_jemaat_id;
-        $scope.model.username = item.kode_kk;
-        $scope.model.nama = item.nama;
-        $scope.model.wijk = item.wijk;
-        $scope.model.ksp = item.ksp;
-        $scope.model.pin = helperServices.randNumber(6);
-        console.log($scope.model);
-    }
-
-    $scope.tambah = () => {
-        $("#addUser").modal("show");
-    }
-
-    $scope.save = () => {
-        pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
-            $.LoadingOverlay("show");
-            if ($scope.model.id) {
-                manajemenUsersServices.put($scope.model).then(res => {
-                    $scope.model = {};
-                    pesan.Success("Berhasil mengubah data");
-                })
-            } else {
-                manajemenUsersServices.post($scope.model).then(res => {
-                    $scope.model = {};
-                    $scope.jemaat = undefined;
-                    $.LoadingOverlay("hide");
-                    pesan.Success("Berhasil menambah data");
-                })
-            }
-        })
-    }
-
-    $scope.edit = (param) => {
-        $scope.model = angular.copy(param);
-        $scope.jemaat = $scope.datas.anggota.find(x => x.anggota_jemaat_id == param.anggota_jemaat_id);
-        console.log($scope.jemaat);
-    }
-
-    $scope.delete = (param) => {
-        pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
-            manajemenUsersServices.deleted(param).then(res => {
-                pesan.Success("Berhasil menghapus data");
-            })
-        });
-    }
-}
 
 function laporanAnggotaJemaatController($scope, laporanAnggotaServices, wijkServices, pesan, helperServices, DTOptionsBuilder) {
     $scope.$emit("SendUp", "Manajemen User");
@@ -522,13 +435,7 @@ function laporanKepalaKeluargaController($scope, laporanServices, kspServices, p
     }
 
     $scope.export = (wijk, ksp) => {
-        if (wijk && ksp) {
-            window.open(helperServices.url + "laporan/excel?item=" + helperServices.encript('kepalaKeluarga') + "&ksp_id=" + helperServices.enkrip(ksp.id), "_blank");
-        } else if (wijk && !ksp) {
-            window.open(helperServices.url + "laporan/excel?item=" + helperServices.encript('kepalaKeluarga') + "&wijk_id=" + helperServices.enkrip(wijk.id), "_blank");
-        } else {
-            pesan.error("WIJK belum di pilih");
-        }
+        window.open(helperServices.url + "laporan/excel?item=" + helperServices.encript('kepalaKeluarga'), "_blank");
     }
 
 
@@ -836,5 +743,3 @@ function pindahJemaatController($scope, pindahJemaatServices, gerejaServices, an
         }
     }
 }
-
-// Anggota Jemaat

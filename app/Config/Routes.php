@@ -1,16 +1,12 @@
 <?php
-
 namespace Config;
-
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
-
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
    require SYSTEMPATH . 'Config/Routes.php';
 }
-
 /*
  * --------------------------------------------------------------------
  * Router Setup
@@ -22,13 +18,11 @@ $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
-
 /*
  * --------------------------------------------------------------------
  * Route Definitions
  * --------------------------------------------------------------------
  */
-
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('login', 'Auth::index');
@@ -40,25 +34,20 @@ $routes->get('send', 'Email::sendEmail');
 $routes->get('check_session', 'Auth::check_session');
 $routes->post('change_pass', 'Auth::change_password');
 $routes->get('/', 'Home::index');
-
 $routes->group('gereja', ['filter' => 'all_auth'], function ($routes) {
    $routes->get('read', 'Gereja::read');
    $routes->post('post', 'Gereja::post');
 });
-
 /*
  * --------------------------------------------------------------------
  * Super Admin
  * --------------------------------------------------------------------
  */
-
 /*
  * --------------------------------------------------------------------
  * End Super Admin
  * --------------------------------------------------------------------
  */
-
-
 /*
  * --------------------------------------------------------------------
  * Admin Gereja
@@ -70,9 +59,6 @@ $routes->group('home', ['filter' => 'all_auth'], function ($routes) {
    $routes->get('get_layanan', 'Home::getLayanan');
    $routes->get('cekkk', 'Home::cekKK');
 });
-
-
-
 $routes->group('anggota', ['filter' => 'auth'], function ($routes) {
    $routes->get('', 'Admin\Anggota::index');
    $routes->get('ultah', 'Admin\Anggota::ultah');
@@ -89,7 +75,6 @@ $routes->group('anggota', ['filter' => 'auth'], function ($routes) {
    $routes->get('layak_baptis', 'Admin\Anggota::layak_baptis');
    $routes->get('golongan_darah', 'Admin\Anggota::getGolonganDarah');
 });
-
 $routes->group('keluarga', ['filter' => 'auth'], function ($routes) {
    $routes->get('', 'Admin\Keluarga::index');
    $routes->get('read', 'Admin\Keluarga::read');
@@ -103,9 +88,6 @@ $routes->group('keluarga', ['filter' => 'auth'], function ($routes) {
    $routes->get('cetakall', 'Admin\Keluarga::cetak_all');
    $routes->post('pecah', 'Admin\Keluarga::pecah');
 });
-
-
-
 $routes->group('laporan', ['filter' => 'auth'], function ($routes) {
    $routes->get('', 'Admin\Laporan::index');
    $routes->get('layak_baptis', 'Admin\Laporan::layak_baptis');
@@ -124,7 +106,6 @@ $routes->group('laporan', ['filter' => 'auth'], function ($routes) {
    $routes->get('unsur', 'Admin\Laporan::unsur');
    $routes->post('get_kepala_keluarga', 'Admin\Laporan::get_kepala_keluarga');
 });
-
 $routes->group('kerukunan', ['filter' => 'auth'], function ($routes) {
    $routes->get('', 'Admin\Kerukunan::index');
    $routes->get('read', 'Admin\Kerukunan::read');
@@ -134,33 +115,27 @@ $routes->group('kerukunan', ['filter' => 'auth'], function ($routes) {
 });
 
 $routes->group('wilayah', ['filter' => 'auth'], function ($routes) {
-   $routes->get('', 'Admin\wilayah::index');
-   $routes->get('read', 'Admin\wilayah::read');
-   $routes->post('post', 'Admin\wilayah::post');
-   $routes->put('put', 'Admin\wilayah::put');
-   $routes->delete('delete/(:any)', 'Admin\wilayah::delete/$1');
+   $routes->get('', 'Admin\Wilayah::index');
+   $routes->get('read', 'Admin\Wilayah::read');
+   $routes->post('post', 'Admin\Wilayah::post');
+   $routes->put('put', 'Admin\Wilayah::put');
+   $routes->delete('delete/(:any)', 'Admin\Wilayah::delete/$1');
 });
 /*
  * --------------------------------------------------------------------
  * End Admin Gereja
  * --------------------------------------------------------------------
  */
-
 /*
  * --------------------------------------------------------------------
  * Jemaat
  * --------------------------------------------------------------------
  */
-
-
 /*
  * --------------------------------------------------------------------
  * End Jemaat
  * --------------------------------------------------------------------
  */
-
-
-
 $routes->group('api/v1', function ($routes) {
    $routes->group('wijk', function ($routes) {
       $routes->get('store', 'Api\Wijk::store');
@@ -177,10 +152,6 @@ $routes->group('api/v1', function ($routes) {
       $routes->put('delete/(:any)', 'Api\Anggota::delete/$1');
    });
 });
-
-
-
-
 /*
  * --------------------------------------------------------------------
  * Additional Routing

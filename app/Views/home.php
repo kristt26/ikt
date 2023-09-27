@@ -24,9 +24,9 @@
                         <img src="<?= base_url() ?>/temp/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
                         <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Kerukunan <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                         </h4>
-                        <a href="<?= base_url('anggota') ?>">
+                        <a href="<?= base_url('kerukunan') ?>">
                             <h2 class="mb-5">
-                                5
+                                <?= $kerukunan?>
                             </h2>
                         </a>
                         <!-- <h6 class="card-text">Increased by 60%</h6> -->
@@ -42,7 +42,7 @@
                         </h4>
                         <a href="<?= base_url('keluarga') ?>">
                             <h2 class="mb-5">
-                                5
+                            <?= $keluarga?>
                             </h2>
                         </a>
                         <!-- <h6 class="card-text">Decreased by 10%</h6> -->
@@ -55,9 +55,9 @@
                         <img src="<?= base_url() ?>/temp/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
                         <h4 class="font-weight-normal mb-3" style="color:black">Jumlah Anggota <i class=" mdi mdi-account-check mdi-24px float-right"></i>
                         </h4>
-                        <a href="<?= base_url('anggota/ultah') ?>">
+                        <a href="<?= base_url('anggota') ?>">
                             <h2 class="mb-5">
-                                5
+                            <?= $anggota?>
                             </h2>
                         </a>
                         <!-- <h6 class="card-text">Decreased by 10%</h6> -->
