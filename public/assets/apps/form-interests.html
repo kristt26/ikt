@@ -1,247 +1,247 @@
-<div class="row" ng-if="!tambahAnggota">
-    <div class="col">
-        <div class="d-flex justify-content-between" style="background-color: #b66dff; padding: 0.5rem 0.4rem;">
-            <h4>Daftar Anggota</h4>
-            <button class="btn btn-success btn-sm mb-2" ng-click="setTambah(true)"><i class="mdi mdi-plus-circle"></i>
-                Tambah</button>
-        </div>
-    </div>
-</div>
-<div class="row border-bottom mb-3" ng-if="!tambahAnggota">
-    <div class="col">
-        <div class="table-responsive  mb-2">
-            <table class="table table-sm table-hover table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th style="width:13%">Action</th>
-                        <th>NIK</th>
-                        <th>Nama</th>
-                        <th>Hubungan Keluarga</th>
-                        <th>Tempat Lahir</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Golongan Darah</th>
-                        <th>Agama</th>
-                        <th>Pendidikan</th>
-                        <th>Pekerjaan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in model.anggota">
-                        <td>{{$index+1}}</td>
-                        <td class="d-flex justify-content-between">
-                            <div class="btn-group">
-                                <button class="btn btn-info btn-sm dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Menu
-                                </button>
-                                <ul class="dropdown-menu bg-secondary" style="min-width: 0rem">
-                                    <button class="btn btn-warning btn-sm btn-rounded btn-icon"
-                                        ng-click="editAnggota(item)" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="Ubah data"><i class="mdi mdi-grease-pencil"></i></button>
-                                    <button class="btn btn-danger btn-sm btn-rounded btn-icon"
-                                        ng-click="removeAnggota(item)" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        title="Hapus Data"><i class="mdi mdi-delete"></i></button>
-                                </ul>
-                            </div>
-
-                        </td>
-                        <td>{{item.nik}}</td>
-                        <td>{{item.nama}}</td>
-                        <td>{{item.hubungan_keluarga}}</td>
-                        <td>{{item.tempat_lahir}}</td>
-                        <td>{{item.tanggal_lahir}}</td>
-                        <td>{{item.gender}}</td>
-                        <td>{{item.golongan_darah}}</td>
-                        <td>{{item.agama}}</td>
-                        <td>{{item.pendidikan_terakhir}}</td>
-                        <td>{{item.pekerjaan}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- Biodata -->
-<div ng-if="tambahAnggota">
-    <!-- Data Diri -->
-    <div class="row">
-        <div class="col">
-            <h4 style="background-color: #b66dff; padding: 0.5rem 0.4rem;">Data Diri</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="nik">Nomor NIK &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.nik.$dirty && signupform.nik.$invalid">
-                    <small class="" ng-show="signupform.nik.$error.required">
-                        Wajib*
-                    </small>
-                    <small class="" ng-show="signupform.nik.$error.minlength">
-                        minimal 1 karakter
-                    </small>
-                </span>
-                <input type="text" class="form-control form-control-sm" name="nik" id="nik" ng-model="itemAnggota.nik"
-                    placeholder="No Induk Kependudukan" ng-minlength=1 maxlength=16 required>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <div class="form-group">
-                <label for="nama">Nama &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.nama.$dirty && signupform.nama.$invalid">
-                    <small class="" ng-show="signupform.nama.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <input type="text" class="form-control form-control-sm" name="nama" id="nama"
-                    ng-model="itemAnggota.nama" placeholder="Nama sesuai KTP" required>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="hubungan">Hubungan keluarga &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.hubungan.$dirty && signupform.hubungan.$invalid">
-                    <small class="" ng-show="signupform.hubungan.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="hubungan" id="hubungan" ui-select2 class="form-control form-control-sm select2"
-                    data-placeholder="Hubungan Keluarga" ng-options="item as item for item in hubungan"
-                    ng-model="itemAnggota.hubungan_keluarga" required>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="tempat_lahir">Tempat Lahir &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.tempat_lahir.$dirty && signupform.tempat_lahir.$invalid">
-                    <small class="" ng-show="signupform.tempat_lahir.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <input type="text" class="form-control form-control-sm" name="tempat_lahir" id="tempat_lahir"
-                    ng-model="itemAnggota.tempat_lahir" placeholder="Tempat Lahir" required>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="tanggal_lahir">Tanggal Lahir &nbsp;</label>
-                <input type="date" class="form-control form-control-sm" name="tanggal_lahir" id="tanggal_lahir"
-                    ng-model="itemAnggota.tanggal_lahir" required>
-                <span style="color: red;"
-                    ng-show="signupform.tanggal_lahir.$dirty && signupform.tanggal_lahir.$invalid">
-                    <small class="" ng-show="signupform.tanggal_lahir.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="gender">Jenis Kelamin &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.gender.$dirty && signupform.gender.$invalid">
-                    <small class="" ng-show="signupform.gender.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="gender" id="gender" ui-select2 class="form-control form-control-sm select2"
-                    data-placeholder="Jenis Kelamin" ng-model="itemAnggota.gender" required>
-                    <option value=""></option>
-                    <option value="L">LAKI-LAKI</option>
-                    <option value="P">PEREMPUAN</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <label for="golongan_darah">Golongan Darah &nbsp;</label>
-                <span style="color: red;"
-                    ng-show="signupform.golongan_darah.$dirty && signupform.golongan_darah.$invalid">
-                    <small class="" ng-show="signupform.golongan_darah.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="golongan_darah" id="golongan_darah" ui-select2
-                    class="form-control form-control-sm select2" data-placeholder="Golongan darah"
-                    ng-options="item as item for item in golonganDarah track by item"
-                    ng-model="itemAnggota.golongan_darah" required>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="agama">Agama &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.agama.$dirty && signupform.agama.$invalid">
-                    <small class="" ng-show="signupform.agama.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="agama" id="agama" ui-select2 class="form-control form-control-sm select2"
-                    data-placeholder="--Pilih Agama--" ng-options="item as item for item in agama"
-                    ng-model="itemAnggota.agama" required>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="pendidikan">Pendidikan Terakhir &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.pendidikan.$dirty && signupform.pendidikan.$invalid">
-                    <small class="" ng-show="signupform.pendidikan.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="pendidikan" id="pendidikan" ui-select2 class="form-control form-control-sm select2"
-                    data-placeholder="--Pendidikan terakhir--" ng-options="item as item for item in pendidikan"
-                    ng-model="itemAnggota.pendidikan_terakhir" required>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="pekerjaan">Pekerjaan &nbsp;</label>
-                <span style="color: red;" ng-show="signupform.pekerjaan.$dirty && signupform.pekerjaan.$invalid">
-                    <small class="" ng-show="signupform.pekerjaan.$error.required">
-                        Wajib*
-                    </small>
-                </span>
-                <select name="pekerjaan" id="pekerjaan" ui-select2 class="form-control form-control-sm select2"
-                    data-placeholder="--Pekerjaan--" ng-options="item as item for item in pekerjaan"
-                    ng-model="itemAnggota.pekerjaan" required>
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between">
-        <a href="javascript:void(0)" ng-click="setTambah(false)" class="btn btn-secondary">
-            <span class="mdi mdi-arrow-left-bold"></span> Batal
-        </a>
-        <button type="button" ng-class="{'btn btn-success': !statusEdit, 'btn btn-warning': statusEdit}"
-            ng-click="addAnggota()">
-            <span class="mdi mdi-plus-circle"></span> {{statusEdit ? 'Ubah' : 'Tambah'}}
-        </button>
-
-    </div>
-</div>
-
-
-<div class="d-flex justify-content-between" ng-if="!tambahAnggota">
-    <a ui-sref="add.keluarga" class="btn btn-info">
-        <span class="mdi mdi-arrow-left-bold"></span> Back
-    </a>
-    <a ui-sref="add.finish"
-        ng-class="{'btn btn-info disabled': !model.anggota || model.anggota.length==0, 'btn btn-info': model.anggota && model.anggota.length>0}"
-        ng-disabled="!model.anggota && model.anggota.length==0" ng-click="next()">
-        Next <span class="mdi mdi-arrow-right-bold"></span>
-    </a>
+<div class="row" ng-if="!tambahAnggota">
+    <div class="col">
+        <div class="d-flex justify-content-between" style="background-color: #b66dff; padding: 0.5rem 0.4rem;">
+            <h4>Daftar Anggota</h4>
+            <button class="btn btn-success btn-sm mb-2" ng-click="setTambah(true)"><i class="mdi mdi-plus-circle"></i>
+                Tambah</button>
+        </div>
+    </div>
+</div>
+<div class="row border-bottom mb-3" ng-if="!tambahAnggota">
+    <div class="col">
+        <div class="table-responsive  mb-2">
+            <table class="table table-sm table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th style="width:13%">Action</th>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Hubungan Keluarga</th>
+                        <th>Tempat Lahir</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Golongan Darah</th>
+                        <th>Agama</th>
+                        <th>Pendidikan</th>
+                        <th>Pekerjaan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in model.anggota">
+                        <td>{{$index+1}}</td>
+                        <td class="d-flex justify-content-between">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-sm dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Menu
+                                </button>
+                                <ul class="dropdown-menu bg-secondary" style="min-width: 0rem">
+                                    <button class="btn btn-warning btn-sm btn-rounded btn-icon"
+                                        ng-click="editAnggota(item)" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Ubah data"><i class="mdi mdi-grease-pencil"></i></button>
+                                    <button class="btn btn-danger btn-sm btn-rounded btn-icon"
+                                        ng-click="removeAnggota(item)" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Hapus Data"><i class="mdi mdi-delete"></i></button>
+                                </ul>
+                            </div>
+
+                        </td>
+                        <td>{{item.nik}}</td>
+                        <td>{{item.nama}}</td>
+                        <td>{{item.hubungan_keluarga}}</td>
+                        <td>{{item.tempat_lahir}}</td>
+                        <td>{{item.tanggal_lahir}}</td>
+                        <td>{{item.gender}}</td>
+                        <td>{{item.golongan_darah}}</td>
+                        <td>{{item.agama}}</td>
+                        <td>{{item.pendidikan_terakhir}}</td>
+                        <td>{{item.pekerjaan}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Biodata -->
+<div ng-if="tambahAnggota">
+    <!-- Data Diri -->
+    <div class="row">
+        <div class="col">
+            <h4 style="background-color: #b66dff; padding: 0.5rem 0.4rem;">Data Diri</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="nik">Nomor NIK &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.nik.$dirty && signupform.nik.$invalid">
+                    <small class="" ng-show="signupform.nik.$error.required">
+                        Wajib*
+                    </small>
+                    <small class="" ng-show="signupform.nik.$error.minlength">
+                        minimal 1 karakter
+                    </small>
+                </span>
+                <input type="text" class="form-control form-control-sm" name="nik" id="nik" ng-model="itemAnggota.nik"
+                    placeholder="No Induk Kependudukan" ng-minlength=1 maxlength=16 required>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="nama">Nama &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.nama.$dirty && signupform.nama.$invalid">
+                    <small class="" ng-show="signupform.nama.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <input type="text" class="form-control form-control-sm" name="nama" id="nama"
+                    ng-model="itemAnggota.nama" placeholder="Nama sesuai KTP" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="hubungan">Hubungan keluarga &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.hubungan.$dirty && signupform.hubungan.$invalid">
+                    <small class="" ng-show="signupform.hubungan.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="hubungan" id="hubungan" ui-select2 class="form-control form-control-sm select2"
+                    data-placeholder="Hubungan Keluarga" ng-options="item as item for item in hubungan"
+                    ng-model="itemAnggota.hubungan_keluarga" required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="tempat_lahir">Tempat Lahir &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.tempat_lahir.$dirty && signupform.tempat_lahir.$invalid">
+                    <small class="" ng-show="signupform.tempat_lahir.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <input type="text" class="form-control form-control-sm" name="tempat_lahir" id="tempat_lahir"
+                    ng-model="itemAnggota.tempat_lahir" placeholder="Tempat Lahir" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="tanggal_lahir">Tanggal Lahir &nbsp;</label>
+                <input type="date" class="form-control form-control-sm" name="tanggal_lahir" id="tanggal_lahir"
+                    ng-model="itemAnggota.tanggal_lahir" required>
+                <span style="color: red;"
+                    ng-show="signupform.tanggal_lahir.$dirty && signupform.tanggal_lahir.$invalid">
+                    <small class="" ng-show="signupform.tanggal_lahir.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="gender">Jenis Kelamin &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.gender.$dirty && signupform.gender.$invalid">
+                    <small class="" ng-show="signupform.gender.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="gender" id="gender" ui-select2 class="form-control form-control-sm select2"
+                    data-placeholder="Jenis Kelamin" ng-model="itemAnggota.gender" required>
+                    <option value=""></option>
+                    <option value="L">LAKI-LAKI</option>
+                    <option value="P">PEREMPUAN</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="golongan_darah">Golongan Darah &nbsp;</label>
+                <span style="color: red;"
+                    ng-show="signupform.golongan_darah.$dirty && signupform.golongan_darah.$invalid">
+                    <small class="" ng-show="signupform.golongan_darah.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="golongan_darah" id="golongan_darah" ui-select2
+                    class="form-control form-control-sm select2" data-placeholder="Golongan darah"
+                    ng-options="item as item for item in golonganDarah track by item"
+                    ng-model="itemAnggota.golongan_darah" required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="agama">Agama &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.agama.$dirty && signupform.agama.$invalid">
+                    <small class="" ng-show="signupform.agama.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="agama" id="agama" ui-select2 class="form-control form-control-sm select2"
+                    data-placeholder="--Pilih Agama--" ng-options="item as item for item in agama"
+                    ng-model="itemAnggota.agama" required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="pendidikan">Pendidikan Terakhir &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.pendidikan.$dirty && signupform.pendidikan.$invalid">
+                    <small class="" ng-show="signupform.pendidikan.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="pendidikan" id="pendidikan" ui-select2 class="form-control form-control-sm select2"
+                    data-placeholder="--Pendidikan terakhir--" ng-options="item as item for item in pendidikan"
+                    ng-model="itemAnggota.pendidikan_terakhir" required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="pekerjaan">Pekerjaan &nbsp;</label>
+                <span style="color: red;" ng-show="signupform.pekerjaan.$dirty && signupform.pekerjaan.$invalid">
+                    <small class="" ng-show="signupform.pekerjaan.$error.required">
+                        Wajib*
+                    </small>
+                </span>
+                <select name="pekerjaan" id="pekerjaan" ui-select2 class="form-control form-control-sm select2"
+                    data-placeholder="--Pekerjaan--" ng-options="item as item for item in pekerjaan"
+                    ng-model="itemAnggota.pekerjaan" required>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <a href="javascript:void(0)" ng-click="setTambah(false)" class="btn btn-secondary">
+            <span class="mdi mdi-arrow-left-bold"></span> Batal
+        </a>
+        <button type="button" ng-class="{'btn btn-success': !statusEdit, 'btn btn-warning': statusEdit}"
+            ng-click="addAnggota()">
+            <span class="mdi mdi-plus-circle"></span> {{statusEdit ? 'Ubah' : 'Tambah'}}
+        </button>
+
+    </div>
+</div>
+
+
+<div class="d-flex justify-content-between" ng-if="!tambahAnggota">
+    <a ui-sref="add.keluarga" class="btn btn-info">
+        <span class="mdi mdi-arrow-left-bold"></span> Back
+    </a>
+    <a ui-sref="add.finish"
+        ng-class="{'btn btn-info disabled': !model.anggota || model.anggota.length==0, 'btn btn-info': model.anggota && model.anggota.length>0}"
+        ng-disabled="!model.anggota && model.anggota.length==0" ng-click="next()">
+        Next <span class="mdi mdi-arrow-right-bold"></span>
+    </a>
 </div>

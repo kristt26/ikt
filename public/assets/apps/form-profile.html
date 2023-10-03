@@ -1,125 +1,125 @@
-<div class="row">
-    <div class="col">
-        <div class="form-group">
-            <label for="nomor">Nomor Keluarga &nbsp;</label>
-            <span style="color: red;" ng-show="signupform.nomor.$dirty && signupform.nomor.$invalid">
-                <small class="" ng-show="signupform.nomor.$error.required">
-                    Nomor Keluarga Wajib.
-                </small>
-                <small class="" ng-show="signupform.nomor.$error.minlength">
-                    minimal harus 1 karakter
-                </small>
-            </span>
-            <input type="text" class="form-control form-control-sm" name="nomor" id="nomor" ng-model="model.nomor"
-                placeholder="Masukkan nomor keluarga" ng-minlength=1 maxlength=16 required>
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-group">
-            <label for="kel">Wilayah &nbsp;</label>
-            <span style="color: red;" ng-show="signupform.kel.$dirty && signupform.kel.$invalid">
-                <small class="" ng-show="signupform.kel.$error.required">
-                    Wilayah Wajib.
-                </small>
-            </span>
-            <select name="kel" id="kel" ui-select2="{ allowClear: true}" class="form-control form-control-sm select2"
-                data-placeholder="--Pilih Kecamatan--"
-                ng-options="item as item.wilayah for item in datas.wilayah track by item.wilayah" ng-model="kel"
-                ng-change="model.wilayah=kel.wilayah; model.wilayah_id=kel.id" required>
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-
-</div>
-<div class="row">
-    <div class="col">
-        <div class="form-group">
-            <label for="kerukunan">Asal Kerukunan &nbsp;</label>
-            <span style="color: red;" ng-show="signupform.kerukunan.$dirty && signupform.kerukunan.$invalid">
-                <small class="" ng-show="signupform.kerukunan.$error.required">
-                    Kerukunan Dipilih.
-                </small>
-            </span>
-            <select name="kerukunan" id="kerukunan" ui-select2="select2Options"
-                class="form-control form-control-sm select2"
-                ng-options="item as item.kerukunan for item in datas.kerukunan track by item.kerukunan"
-                ng-model="kerukunan" ng-change="model.kerukunan_id=kerukunan.id; model.kerukunan=kerukunan.kerukunan"
-                required>
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-group">
-            <label for="kontak">kontak/Hp &nbsp;</label>
-            <input type="text" class="form-control form-control-sm" name="kontak" id="kontak" ng-model="model.kontak"
-                placeholder="Telepon Rumah" />
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-group">
-            <label for="status_tinggal">Status Tempat Tinggal &nbsp;</label>
-            <span style="color: red;" ng-show="signupform.status_tinggal.$dirty && signupform.status_tinggal.$invalid">
-                <small class="" ng-show="signupform.status_tinggal.$error.required">
-                    Status tinggal wajib dipilih.
-                </small>
-            </span>
-            <select name="status_tinggal" id="status_tinggal" ui-select2 class="form-control form-control-sm select2"
-                data-placeholder="--Pilih Status Tinggal--" ng-model="model.status_tinggal" required>
-                <option ng-if="!model.id" value=""></option>
-                <option value="Hak Milik">Hak Milik</option>
-                <option value="Sewa">Sewa</option>
-                <option value="Kost">kost</option>
-                <option value="Menumpang">Menumpang</option>
-            </select>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <div class="form-group">
-            <label for="alamat">Alamat &nbsp;</label>
-            <span style="color: red;" ng-show="signupform.alamat.$dirty && signupform.alamat.$invalid">
-                <small class="" ng-show="signupform.alamat.$error.required">
-                    Alamat tidak boleh kosong.
-                </small>
-                <small class="" ng-show="signupform.alamat.$error.minlength">
-                    Alamat harus minimal 1 digit
-                </small>
-            </span>
-            <textarea name="alamat" id="alamat" rows="4" class="form-control form-control-sm" ng-model="model.alamat"
-                placeholder="Alamat" ng-minlength=1 required></textarea>
-        </div>
-    </div>
-</div>
-<div class="d-flex justify-content-between" ng-if="!tambahAnggota">
-    <a href="" class="btn btn-warning" style="color: black;" ng-click="batal()">
-        <span class="mdi mdi-arrow-left-bold"></span> Batal
-    </a>
-    <a ui-sref="add.anggota"
-        ng-class="{'btn btn-info disabled': signupform.$invalid, 'btn btn-info': !signupform.$invalid}"
-        ng-disabled=signupform.$invalid ng-click="next()">
-        Next <span class="mdi mdi-arrow-right-bold"></span>
-    </a>
-</div>
-<div class="modal fade" id="addKerukunan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Kerukunan</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="kerukunan">Kerukunan</label>
-                    <input type="text" class="form-control" id="kerukunan" ng-model="dataRukun.kerukunan"
-                        placeholder="Nama Kerukunan" capitalize>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" ng-click="hideModel()">Close</button>
-                <button type="button" class="btn btn-primary btn-sm" ng-click="saveKerukunan()">Tambah</button>
-            </div>
-        </div>
-    </div>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label for="nomor">Nomor Keluarga &nbsp;</label>
+            <span style="color: red;" ng-show="signupform.nomor.$dirty && signupform.nomor.$invalid">
+                <small class="" ng-show="signupform.nomor.$error.required">
+                    Nomor Keluarga Wajib.
+                </small>
+                <small class="" ng-show="signupform.nomor.$error.minlength">
+                    minimal harus 1 karakter
+                </small>
+            </span>
+            <input type="text" class="form-control form-control-sm" name="nomor" id="nomor" ng-model="model.nomor"
+                placeholder="Masukkan nomor keluarga" ng-minlength=1 maxlength=16 required>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-group">
+            <label for="kel">Wilayah &nbsp;</label>
+            <span style="color: red;" ng-show="signupform.kel.$dirty && signupform.kel.$invalid">
+                <small class="" ng-show="signupform.kel.$error.required">
+                    Wilayah Wajib.
+                </small>
+            </span>
+            <select name="kel" id="kel" ui-select2="{ allowClear: true}" class="form-control form-control-sm select2"
+                data-placeholder="--Pilih Kecamatan--"
+                ng-options="item as item.wilayah for item in datas.wilayah track by item.wilayah" ng-model="kel"
+                ng-change="model.wilayah=kel.wilayah; model.wilayah_id=kel.id" required>
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label for="kerukunan">Asal Kerukunan &nbsp;</label>
+            <span style="color: red;" ng-show="signupform.kerukunan.$dirty && signupform.kerukunan.$invalid">
+                <small class="" ng-show="signupform.kerukunan.$error.required">
+                    Kerukunan Dipilih.
+                </small>
+            </span>
+            <select name="kerukunan" id="kerukunan" ui-select2="select2Options"
+                class="form-control form-control-sm select2"
+                ng-options="item as item.kerukunan for item in datas.kerukunan track by item.kerukunan"
+                ng-model="kerukunan" ng-change="model.kerukunan_id=kerukunan.id; model.kerukunan=kerukunan.kerukunan"
+                required>
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-group">
+            <label for="kontak">kontak/Hp &nbsp;</label>
+            <input type="text" class="form-control form-control-sm" name="kontak" id="kontak" ng-model="model.kontak"
+                placeholder="Telepon Rumah" />
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-group">
+            <label for="status_tinggal">Status Tempat Tinggal &nbsp;</label>
+            <span style="color: red;" ng-show="signupform.status_tinggal.$dirty && signupform.status_tinggal.$invalid">
+                <small class="" ng-show="signupform.status_tinggal.$error.required">
+                    Status tinggal wajib dipilih.
+                </small>
+            </span>
+            <select name="status_tinggal" id="status_tinggal" ui-select2 class="form-control form-control-sm select2"
+                data-placeholder="--Pilih Status Tinggal--" ng-model="model.status_tinggal" required>
+                <option ng-if="!model.id" value=""></option>
+                <option value="Hak Milik">Hak Milik</option>
+                <option value="Sewa">Sewa</option>
+                <option value="Kost">kost</option>
+                <option value="Menumpang">Menumpang</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label for="alamat">Alamat &nbsp;</label>
+            <span style="color: red;" ng-show="signupform.alamat.$dirty && signupform.alamat.$invalid">
+                <small class="" ng-show="signupform.alamat.$error.required">
+                    Alamat tidak boleh kosong.
+                </small>
+                <small class="" ng-show="signupform.alamat.$error.minlength">
+                    Alamat harus minimal 1 digit
+                </small>
+            </span>
+            <textarea name="alamat" id="alamat" rows="4" class="form-control form-control-sm" ng-model="model.alamat"
+                placeholder="Alamat" ng-minlength=1 required></textarea>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-between" ng-if="!tambahAnggota">
+    <a href="" class="btn btn-warning" style="color: black;" ng-click="batal()">
+        <span class="mdi mdi-arrow-left-bold"></span> Batal
+    </a>
+    <a ui-sref="add.anggota"
+        ng-class="{'btn btn-info disabled': signupform.$invalid, 'btn btn-info': !signupform.$invalid}"
+        ng-disabled=signupform.$invalid ng-click="next()">
+        Next <span class="mdi mdi-arrow-right-bold"></span>
+    </a>
+</div>
+<div class="modal fade" id="addKerukunan" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Kerukunan</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="kerukunan">Kerukunan</label>
+                    <input type="text" class="form-control" id="kerukunan" ng-model="dataRukun.kerukunan"
+                        placeholder="Nama Kerukunan" capitalize>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="hideModel()">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" ng-click="saveKerukunan()">Tambah</button>
+            </div>
+        </div>
+    </div>
 </div>

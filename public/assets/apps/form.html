@@ -1,30 +1,30 @@
-<div class="card">
-    <div class="card-body">
-        <div class="text-center mb-5">
-            <!-- the links to our nested states using relative paths -->
-            <!-- add the active class if the state matches our ui-sref -->
-            <h3 class="mb-3">{{model.setPage=='add' ? 'TAMBAH KELUARGA BARU' : model.setPage=='edit' ? 'UBAH DATA KELUARGA' : model.setPage=='pecah' ? 'PECAH KELUARGA' : ''}}</h3>
-            <div id="status-buttons" class="text-center">
-                <a ui-sref-active="active" ui-sref=".keluarga"><span>1</span> Keluarga</a>
-                <a ui-sref-active="active" ui-sref=".anggota" ng-disabled="signupform.$invalid"><span>2</span>
-                    Anggota</a>
-                <a ui-sref-active="active" ui-sref=".finish" ng-disabled=signupform.$invalid><span>3</span>
-                    Finish</a>
-            </div>
-        </div>
-        
-        <!-- use ng-submit to catch the form submission and use our Angular function -->
-        <form name="signupform" novalidate ng-submit="processForm()">
-            <!-- our nested state views will be injected here  -->
-            <div id="form-views" ui-view></div>
-        </form>
-    </div>
-</div>
-<div class="col-lg-12">
-    <div class="card mb-4">
-        <div class="col-sm-12">
-            <!-- show our formData as it is being typed -->
-            <!-- <pre>{{ formData }}</pre> -->
-        </div>
-    </div>
+<div class="card">
+    <div class="card-body">
+        <div class="text-center mb-5">
+            <!-- the links to our nested states using relative paths -->
+            <!-- add the active class if the state matches our ui-sref -->
+            <h3 class="mb-3">{{model.setPage=='add' ? 'TAMBAH KELUARGA BARU' : model.setPage=='edit' ? 'UBAH DATA KELUARGA' : model.setPage=='pecah' ? 'PECAH KELUARGA' : ''}}</h3>
+            <div id="status-buttons" class="text-center">
+                <a ui-sref-active="active" ui-sref=".keluarga"><span>1</span> Keluarga</a>
+                <a ui-sref-active="active" ui-sref=".anggota" ng-disabled="signupform.$invalid"><span>2</span>
+                    Anggota</a>
+                <a ui-sref-active="active" ui-sref=".finish" ng-disabled=signupform.$invalid><span>3</span>
+                    Finish</a>
+            </div>
+        </div>
+        
+        <!-- use ng-submit to catch the form submission and use our Angular function -->
+        <form name="signupform" novalidate ng-submit="processForm()">
+            <!-- our nested state views will be injected here  -->
+            <div id="form-views" ui-view></div>
+        </form>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card mb-4">
+        <div class="col-sm-12">
+            <!-- show our formData as it is being typed -->
+            <!-- <pre>{{ formData }}</pre> -->
+        </div>
+    </div>
 </div>

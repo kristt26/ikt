@@ -1,9 +1,9 @@
-<?php
-
-namespace Config;
-
-use CodeIgniter\Config\ForeignCharacters as BaseForeignCharacters;
-
-class ForeignCharacters extends BaseForeignCharacters
-{
-}
+<?php
+
+namespace Config;
+
+use CodeIgniter\Config\ForeignCharacters as BaseForeignCharacters;
+
+class ForeignCharacters extends BaseForeignCharacters
+{
+}

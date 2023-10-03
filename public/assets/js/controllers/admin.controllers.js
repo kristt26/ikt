@@ -1,6 +1,7 @@
 angular.module('adminctrl', [])
     // Admin
     .controller('dashboardController', dashboardController)
+    .controller('wilayahController', wilayahController)
     .controller('kerukunanController', kerukunanController)
     .controller('detailKeluargaController', detailKeluargaController)
     .controller('anggotaController', anggotaController)
@@ -22,6 +23,54 @@ function dashboardController($scope, dashboardServices) {
     // dashboardServices.get().then(res=>{
     //     $scope.datas = res;
     // })
+}
+
+function wilayahController($scope, wilayahServices, pesan) {
+    $scope.$emit("SendUp", "Pembobotan Faktor");
+    $scope.datas = {};
+    $scope.model = {};
+    $.LoadingOverlay("show");
+    wilayahServices.get().then((res) => {
+        $scope.datas = res;
+        $.LoadingOverlay("hide");
+    })
+
+    $scope.setInisial = (item) => {
+        $scope.model.inisial = item.substring(0, 3).toUpperCase();
+    }
+
+    $scope.save = () => {
+        pesan.dialog('Yakin ingin?', 'Yes', 'Tidak').then(res => {
+            $.LoadingOverlay("show");
+            if ($scope.model.id) {
+                wilayahServices.put($scope.model).then(res => {
+                    $scope.model = {};
+                    $.LoadingOverlay("hide");
+                    pesan.Success("Berhasil mengubah data");
+                })
+            } else {
+                wilayahServices.post($scope.model).then(res => {
+                    $scope.model = {};
+                    $.LoadingOverlay("hide");
+                    pesan.Success("Berhasil menambah data");
+                })
+            }
+        })
+    }
+
+    $scope.edit = (item) => {
+        $scope.model = angular.copy(item);
+    }
+
+    $scope.delete = (param) => {
+        pesan.dialog('Yakin ingin?', 'Ya', 'Tidak').then(res => {
+            $.LoadingOverlay("show");
+            wilayahServices.deleted(param).then(res => {
+                $.LoadingOverlay("hide");
+                pesan.Success("Berhasil menghapus data");
+            })
+        });
+    }
 }
 
 function kerukunanController($scope, kerukunanServices, pesan) {
