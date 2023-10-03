@@ -2,25 +2,36 @@
 
 namespace App\Controllers;
 
+use App\Models\AnggotaModel;
+use App\Models\KeluargaModel;
+use App\Models\KerukunanModel;
 use CodeIgniter\API\ResponseTrait;
 
 class Home extends BaseController
 {
     use ResponseTrait;
-    protected $wijk;
-    protected $jiwa;
-    protected $kk;
+    protected $keluarga;
+    protected $anggota;
+    protected $kerukunan;
     protected $conn;
     public function __construct()
     {
         $this->conn = \Config\Database::connect();
+        $this->keluarga = new KeluargaModel();
+        $this->anggota = new AnggotaModel();
+        $this->kerukunan = new KerukunanModel();
     }
     public function index()
     {
         if ((!session()->get('is_Login'))) {
             return redirect()->to(base_url('/login?#'));
             exit();
-        } else return view('home');
+        } else {
+            $data = $this->conn->query("SELECT (SELECT COUNT(*) FROM keluarga WHERE deleted_at is null) as keluarga, 
+            (SELECT COUNT(*) FROM anggota WHERE deleted_at is null) as anggota,
+            (SELECT COUNT(*) FROM kerukunan) as kerukunan")->getRowArray();
+            return view('home', $data);
+        } 
         // if (session()->get('level') == 'Admin') {
         //     $jiwas = $this->jiwa->getAll()->get()->getResult();
         //     $kks = $this->kk->getAll();
